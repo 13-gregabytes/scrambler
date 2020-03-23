@@ -14,7 +14,12 @@ repositories {
     mavenCentral()
 }
 dependencies {
-    implementation 'org.apache.tomcat.embed:tomcat-embed-jasper'
+    implementation files('lib/TNoodle-WCA-0.15.1.jar')
     implementation 'org.springframework.boot:spring-boot-starter-web'
+
+
+    implementation 'javax.servlet:jstl'
+    implementation 'org.apache.tomcat.embed:tomcat-embed-jasper'
     providedRuntime 'org.springframework.boot:spring-boot-starter-tomcat'
+    implementation 'org.springframework:spring-context'
 }

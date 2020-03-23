@@ -1,0 +1,32 @@
+body {
+    font-family: Tahoma, Geneva, sans-serif;
+    padding: 0;
+    font-size: 30px;
+}
+
+div#scramble {
+    width: 50%;
+    word-spacing: 20px;
+}
+
+div#scramble > span {
+    margin: 10px;
+}
+
+div#scramble > span:hover {
+    cursor: pointer;
+    color: red;
+}
+
+div#image > svg {
+    width: 50%;
+    height: auto;
+}
+
+rect[fill="#ff0000"] {
+    fill: #c70000;
+}
+
+rect[fill="#0000ff"] {
+    fill: #0045ef;
+}
