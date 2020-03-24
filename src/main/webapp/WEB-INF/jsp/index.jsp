@@ -12,14 +12,27 @@
   <script type="text/javascript" src="scripts/scramble.js"></script>
 
   <link rel="stylesheet" type="text/css" href="style/page.css">
+
+  <script>
+    $(document).ready(cube.onload);
+  </script>
 </head>
 
 <body>
-<div id="scramble"></div>
-<div id="image"></div>
-<script>
-  (function() { cube.onload() })();
-</script>
+
+<div id="left">
+  <div id="scramble"></div>
+  <div id="break"></div>
+  <div id="image"></div>
+</div>
+<div id="right">
+  <div id="clock">00:00.00</div>
+  <div id="break"></div>
+  <div id="timings">
+    <div id="times">No times yet</div>
+    <div id="averages"></div>
+  </div>
+</div>
 
 </body>
 </html>

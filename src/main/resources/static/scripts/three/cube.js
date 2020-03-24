@@ -591,56 +591,6 @@ cube.display = function display() {
     parent.show();
 };
 
-cube.startStopClock = function startStopClock(event) {
-
-    if (event.code == "Space") {
-        if (cube.clockStopped)
-            cube.resetClock();
-        else if (cube.clockInterval == undefined) {
-            let d = $("#time");
-
-            cube.clockInterval = setInterval(function clockStuff() {
-                let t = (new Date).getTime();
-
-                if (!cube.clockStart)
-                    cube.clockStart = t;
-
-                let elapsed = t - cube.clockStart;
-
-                let seconds = Math.floor(elapsed / 1000);
-
-                let millis = elapsed - (seconds * 1000);
-
-                let minutes = Math.floor(seconds / 60);
-
-                seconds = seconds - (minutes * 60);
-
-                if (minutes < 10)
-                    minutes = "0" + minutes;
-
-                if (seconds < 10)
-                    seconds = "0" + seconds;
-
-                millis = Math.floor(millis / 100);
-
-                d.html(minutes + ":" + seconds + "." + millis);
-            }, 50);
-        } else {
-            clearInterval(cube.clockInterval);
-            cube.clockInterval = undefined;
-            cube.clockStopped = true;
-        }
-    }
-};
-
-cube.resetClock = function resetClock() {
-    cube.clockStopped = false;
-    clearInterval(cube.clockInterval);
-    cube.clockInterval = undefined;
-    cube.clockStart = undefined;
-
-    $("#time").html("00:00.0");
-};
 
 cube.resize = function resize() {
 
