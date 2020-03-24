@@ -7,8 +7,8 @@ plugins {
 group = 'bochan.greg'
 version = '0.0.1-SNAPSHOT'
 
-sourceCompatibility = '11'
-targetCompatibility = '11'
+sourceCompatibility = '1.8'
+targetCompatibility = '1.8'
 
 repositories {
     mavenCentral()
@@ -16,8 +16,6 @@ repositories {
 dependencies {
     implementation files('lib/TNoodle-WCA-0.15.1.jar')
     implementation 'org.springframework.boot:spring-boot-starter-web'
-
-
     implementation 'javax.servlet:jstl'
     implementation 'org.apache.tomcat.embed:tomcat-embed-jasper'
     providedRuntime 'org.springframework.boot:spring-boot-starter-tomcat'
