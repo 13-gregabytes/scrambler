@@ -1,6 +1,6 @@
 package bochan.greg.main;
 
-import bochan.greg.main.filter.GregScrambleFilter;
+import bochan.greg.main.filter.GregCORSFilter;
 import bochan.greg.main.servlet.GregScrambleServlet;
 import net.gnehzr.tnoodle.server.webscrambles.ScrambleViewHandler;
 import net.gnehzr.tnoodle.utils.BadLazyClassDescriptionException;
@@ -40,7 +40,7 @@ public class CubeShuffleApplication {
 
     @Bean
     public FilterRegistrationBean registerScrambleFilter() {
-        FilterRegistrationBean bean = new FilterRegistrationBean(new GregScrambleFilter());
+        FilterRegistrationBean bean = new FilterRegistrationBean(new GregCORSFilter());
 
         bean.addUrlPatterns("/*");
 
