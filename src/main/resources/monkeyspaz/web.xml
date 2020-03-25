@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE web-app PUBLIC "-//Sun Microsystems, Inc.//DTD Web Application 2.3//EN" "http://java.sun.com/dtd/web-app_2_3.dtd">
+<web-app id="WebApp">
+	<display-name>Scrambler</display-name>
+
+	<filter>
+		<filter-name>CORSFilter</filter-name>
+		<display-name>CORSFilter</display-name>
+		<filter-class>bochan.greg.main.filter.GregCORSFilter</filter-class>
+	</filter>
+	<filter-mapping>
+		<filter-name>CORSFilter</filter-name>
+		<servlet-name>/*</servlet-name>
+	</filter-mapping>
+
+	<servlet>
+		<servlet-name>Scrambler</servlet-name>
+		<display-name>Scrambler</display-name>
+		<servlet-class>bochan.greg.main.servlet.GregScrambleServlet</servlet-class>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>Scrambler</servlet-name>
+		<url-pattern>/scramble/*</url-pattern>
+	</servlet-mapping>
+
+	<servlet>
+		<servlet-name>Viewer</servlet-name>
+		<display-name>Viewer</display-name>
+		<servlet-class>bochan.greg.main.servlet.GregViewServlet</servlet-class>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>Viewer</servlet-name>
+		<url-pattern>/view/*</url-pattern>
+	</servlet-mapping>
+
+	<welcome-file-list>
+		<welcome-file>index.jsp</welcome-file>
+	</welcome-file-list>
+</web-app>

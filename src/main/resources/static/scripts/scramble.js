@@ -1,14 +1,27 @@
 window.cube = {};
 
-cube.onload = function onload() {
-    $("body").on("keypress", function(event) { cube.startStopClock(event) });
+cube.baseURL = "http://localhost:8080";
+// cube.baseURL = "https://monkeyspaz.com/scrambler";
 
-    ajax.get("http://localhost:8080/scramble/.json?=333", undefined, function (json) {
+cube.onload = function onload() {
+    $("body").on("keypress", function (event) {
+        cube.startStopClock(event)
+    });
+
+    cube.getScramble();
+
+    cube.getTimesFromLocalStorage();
+};
+
+cube.getScramble = function getScramble() {
+    ajax.get(cube.baseURL + "/scramble/.json?=333", undefined, function (json) {
         let scrambleJSON = JSON.parse(json)
         let scramble = scrambleJSON[0].scrambles[0];
         let puzzle = scrambleJSON[0].scrambler;
 
         let scrambleDiv = $("#scramble");
+
+        scrambleDiv.html("");
 
         scrambleDiv.append($("<span>").addClass("totalScramble").text(scramble).hide());
 
@@ -32,12 +45,10 @@ cube.onload = function onload() {
 
         cube.getImage(puzzle, scramble);
     });
-
-    cube.getTimesFromLocalStorage();
 };
 
 cube.getImage = function getImage(puzzle, scramble) {
-    ajax.get("http://localhost:8080/view/" + puzzle + ".svg?scramble=" + scramble, undefined, function (svg) {
+    ajax.get(cube.baseURL + "/view/" + puzzle + ".svg?scramble=" + scramble, undefined, function (svg) {
         $("#image").html(svg);
     });
 };
@@ -180,6 +191,8 @@ cube.resetClock = function resetClock() {
     cube.clockStart = undefined;
 
     $("#clock").html("00:00.00");
+
+    cube.getScramble();
 };
 
 cube.convertTimeStringToMillis = function convertTimeStringToMillis(toConvert) {

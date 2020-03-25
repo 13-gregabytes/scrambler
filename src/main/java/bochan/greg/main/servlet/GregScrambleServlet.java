@@ -9,6 +9,7 @@ import java.io.IOException;
 
 public class GregScrambleServlet extends ScrambleHandler {
     public GregScrambleServlet() {
+        super();
     }
 
     @Override

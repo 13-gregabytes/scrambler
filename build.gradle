@@ -21,3 +21,44 @@ dependencies {
     providedRuntime 'org.springframework.boot:spring-boot-starter-tomcat'
     implementation 'org.springframework:spring-context'
 }
+
+task gregDeploy(type: Jar) {
+    archiveName 'scrambler.war'
+
+    manifest {
+        attributes 'Implementation-Title': 'Scrambler war',
+                    'Implementation-Version': version
+    }
+
+    from('src/main/webapp/WEB-INF/jsp/') {
+        into('/')
+        includes = ['index.jsp']
+    }
+
+    from('src/main/resources/static') {
+        into('/')
+    }
+
+    from('src/main/resources/monkeyspaz') {
+        into("/WEB-INF")
+        includes = ['web.xml']
+    }
+
+    from('lib') {
+        into('/WEB-INF/lib')
+        includes = ['*']
+    }
+
+    from (sourceSets.main.output) {
+        into('WEB-INF/classes')
+        excludes = [
+            '**/CubeShuffleApplication*',
+            '**/JspController*',
+            '**/monkeyspaz',
+            '**/static',
+            'application.properties'
+        ]
+    }
+
+
+}
