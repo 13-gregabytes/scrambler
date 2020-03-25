@@ -10,7 +10,7 @@ cube.onload = function onload() {
 
     cube.getScramble();
 
-    cube.getTimesFromLocalStorage();
+    cube.getSolvesFromLocalStorage();
 };
 
 cube.getScramble = function getScramble() {
@@ -53,38 +53,46 @@ cube.getImage = function getImage(puzzle, scramble) {
     });
 };
 
-cube.getTimesFromLocalStorage = function getTimesFromLocalStorage() {
-    let times = localStorage.getItem("timings");
-    let timesArray;
+cube.getSolvesFromLocalStorage = function getSolvesFromLocalStorage() {
+    let solves = localStorage.getItem("solves");
+    let solvesArray;
 
-    if (times && (timesArray = JSON.parse(times))) {
-        cube.populateTimesDiv(timesArray);
+    if (solves && (solvesArray = JSON.parse(solves))) {
+        cube.populateSolvesDiv(solvesArray);
     }
 };
 
-cube.populateTimesDiv = function populateTimesDiv(timesArray) {
-    let list = $("ol.timesList");
+cube.populateSolvesDiv = function populateSolvesDiv(solvesArray) {
+    let list = $("ol.solvesList");
 
     if (!list.length)
-        list = $("<ol>").addClass("timesList").prop("reversed", true);
+        list = $("<ol>").addClass("solvesList").prop("reversed", true);
 
-    for (let x in timesArray) {
-        let time = timesArray[x];
-        let tspan = $("<span>").text(time.time).addClass("solveTime");
-        let sspan = $("<span>").text(time.scramble).addClass("solveScramble").hide();
-        let li = $("<li>").addClass("solveItem").append(tspan).append(sspan);
+    for (let x in solvesArray) {
+        let solve = solvesArray[x];
+
+        let solveStr = JSON.stringify(solve);
+        let solveBase64 = btoa(solveStr);
+
+        let tspan = $("<span>").text(solve.time).addClass("solveTime");
+        let infoSpan = $("<span>").text(solveBase64).addClass("solveInfo").hide();
+        let delSpan = $("<i>").addClass("fa fa-times-circle").on("click", function() {
+            alert("Going to delete this in a future version");
+        });
+
+        let li = $("<li>").addClass("solveItem").append(tspan).append(infoSpan).append(delSpan);
 
         list.prepend(li);
     }
 
-    $("#times").html("");
-    $("#times").append(list);
+    $("#solves").html("");
+    $("#solves").append(list);
 
     cube.calculateAverages();
 };
 
 cube.calculateAverages = function calculateAverages() {
-    let objArray = JSON.parse(JSON.stringify(cube.collectTimesToArray()));
+    let objArray = JSON.parse(JSON.stringify(cube.collectSolvesToArray()));
 
     let timeArray = [];
     objArray.forEach(function (val) {
@@ -136,23 +144,27 @@ cube.calculateAveragesWork = function calculateAveragesWork(theArray, numberToAv
     return avg;
 };
 
-cube.collectTimesToArray = function collectTimesToArray() {
+cube.collectSolvesToArray = function collectSolvesToArray() {
 
     let timeArray = [];
 
     $(".solveItem").each(function () {
         let self = $(this);
-        let timeObj = { "time": self.find(".solveTime").text(), "scramble": self.find(".solveScramble").text() };
+        let solveObj = {
+            "time": self.find(".solveTime").text(),
+            "scramble": self.find(".solveInfo").text(),
+            "date": self.find(".solveDate").text()
+        };
 
-        timeArray.unshift(timeObj);
+        timeArray.unshift(solveObj);
     });
 
     return timeArray;
 };
 
-cube.setTimesToLocalStorage = function setTimesToLocalStorage() {
-    let timeArray = cube.collectTimesToArray();
-    if (timeArray.length && localStorage.setItem("timings", JSON.stringify(timeArray)));
+cube.setSolvesToLocalStorage = function setSolvesToLocalStorage() {
+    let solvesArray = cube.collectSolvesToArray();
+    if (solvesArray.length && localStorage.setItem("solves", JSON.stringify(solvesArray)));
 };
 
 cube.startStopClock = function startStopClock(event) {
@@ -178,8 +190,13 @@ cube.startStopClock = function startStopClock(event) {
             cube.clockInterval = undefined;
             cube.clockStopped = true;
 
-            cube.populateTimesDiv([{ "scramble": $(".totalScramble").text(), "time": $("#clock").text()}]);
-            cube.setTimesToLocalStorage();
+            let solveObj = {
+                "scramble": $(".totalScramble").text(),
+                "time": $("#clock").text(),
+                "date": (new Date()).getTime()
+            };
+            cube.populateSolvesDiv([solveObj]);
+            cube.setSolvesToLocalStorage();
         }
     }
 };

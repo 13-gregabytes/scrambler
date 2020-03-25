@@ -1,6 +1,7 @@
 package bochan.greg.main;
 
 import bochan.greg.main.filter.GregCORSFilter;
+import bochan.greg.main.servlet.GregSaveServlet;
 import bochan.greg.main.servlet.GregScrambleServlet;
 import net.gnehzr.tnoodle.server.webscrambles.ScrambleViewHandler;
 import net.gnehzr.tnoodle.utils.BadLazyClassDescriptionException;
@@ -35,6 +36,13 @@ public class CubeShuffleApplication {
             e.printStackTrace();
         }
 
+        return bean;
+    }
+
+    @Bean
+    public ServletRegistrationBean registerSaveServlet() {
+        ServletRegistrationBean bean = new ServletRegistrationBean(new GregSaveServlet(), "/save");
+        bean.setLoadOnStartup(1);
         return bean;
     }
 

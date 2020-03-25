@@ -1,5 +1,5 @@
 div {
-   /* border: 1px solid black; */
+    /* border: 1px solid black; */
 }
 
 body {
@@ -33,7 +33,7 @@ div#scramble > span:hover {
     color: red;
 }
 
-div#break {
+div.break {
     clear: both;
 }
 
@@ -66,18 +66,26 @@ div#clock {
     line-height: 26vh;
 }
 
-ol.timesList {
+ol.solvesList {
     margin: 6vh;
 }
 
-div#times,
+div#solves,
 div#averages {
     height: 100%;
     float: left;
     width: calc(100% / 2 - 3px);
 }
 
-div#times {
+div#solves {
     overflow: auto;
 }
 
+i.fa.fa-times-circle {
+    color: firebrick;
+    padding: 0 0 0 6px;
+    font-size: 22px;
+    position: relative;
+    top: -1px;
+    cursor: no-drop;
+}
