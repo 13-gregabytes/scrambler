@@ -1,6 +1,7 @@
 package bochan.greg.main;
 
 import bochan.greg.main.filter.GregCORSFilter;
+import bochan.greg.main.servlet.GregRetrieveServlet;
 import bochan.greg.main.servlet.GregSaveServlet;
 import bochan.greg.main.servlet.GregScrambleServlet;
 import net.gnehzr.tnoodle.server.webscrambles.ScrambleViewHandler;
@@ -36,6 +37,13 @@ public class CubeShuffleApplication {
             e.printStackTrace();
         }
 
+        return bean;
+    }
+
+    @Bean
+    public ServletRegistrationBean registerRetrieveServlet() {
+        ServletRegistrationBean bean = new ServletRegistrationBean(new GregRetrieveServlet(), "/retrieve");
+        bean.setLoadOnStartup(1);
         return bean;
     }
 

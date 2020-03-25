@@ -35,7 +35,8 @@ ajax.send = function (url, callback, method, data, additionalHeaders) {
 
     x.onreadystatechange = function () {
         if (x.readyState == 4) {
-            callback(x.responseText)
+            if (callback)
+                callback(x.responseText)
         }
     };
 

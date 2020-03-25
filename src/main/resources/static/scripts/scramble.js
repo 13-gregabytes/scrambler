@@ -3,73 +3,85 @@ window.cube = {};
 cube.baseURL = "http://localhost:8080";
 // cube.baseURL = "https://monkeyspaz.com/scrambler";
 
+cube.solves = [];
+
 cube.onload = function onload() {
     $("body").on("keypress", function (event) {
         cube.startStopClock(event)
     });
 
     cube.getScramble();
-
-    cube.getSolvesFromLocalStorage();
+    cube.retrieveSolves();
 };
 
 cube.getScramble = function getScramble() {
-    ajax.get(cube.baseURL + "/scramble/.json?=333", undefined, function (json) {
-        let scrambleJSON = JSON.parse(json)
-        let scramble = scrambleJSON[0].scrambles[0];
-        let puzzle = scrambleJSON[0].scrambler;
+    ajax.get(cube.baseURL + "/scramble/.json?=333", undefined, cube.processScramble);
+};
 
-        let scrambleDiv = $("#scramble");
+cube.processScramble = function processScramble(scrambleResponse) {
+    let scrambleJSON = JSON.parse(scrambleResponse)
+    let scramble = scrambleJSON[0].scrambles[0];
+    let puzzle = scrambleJSON[0].scrambler;
 
-        scrambleDiv.html("");
+    let scrambleDiv = $("#scramble");
 
-        scrambleDiv.append($("<span>").addClass("totalScramble").text(scramble).hide());
+    scrambleDiv.html("");
 
-        let scrambleArray = scramble.split(" ");
-        let scrambleSoFar = [];
-        for (let a in scrambleArray) {
-            let turn = scrambleArray[a];
+    scrambleDiv.append($("<span>").addClass("totalScramble").text(scramble).hide());
 
-            scrambleSoFar.push(turn);
+    let scrambleArray = scramble.split(" ");
+    let scrambleSoFar = [];
+    for (let a in scrambleArray) {
+        let turn = scrambleArray[a];
 
-            let span = $("<span>").text(turn);
+        scrambleSoFar.push(turn);
 
-            let click = function(string) {
-                return function() { cube.getImage(puzzle, string); };
-            }(scrambleSoFar.join(" "));
+        let span = $("<span>").text(turn);
 
-            span.on("click", click);
+        let click = function(string) {
+            return function() { cube.getImage(puzzle, string); };
+        }(scrambleSoFar.join(" "));
 
-            scrambleDiv.append(span);
-        }
+        span.on("click", click);
 
-        cube.getImage(puzzle, scramble);
-    });
+        scrambleDiv.append(span);
+    }
+
+    cube.getImage(puzzle, scramble);
 };
 
 cube.getImage = function getImage(puzzle, scramble) {
-    ajax.get(cube.baseURL + "/view/" + puzzle + ".svg?scramble=" + scramble, undefined, function (svg) {
-        $("#image").html(svg);
-    });
+    ajax.get(cube.baseURL + "/view/" + puzzle + ".svg?scramble=" + scramble, undefined, cube.displayImage);
 };
 
-cube.getSolvesFromLocalStorage = function getSolvesFromLocalStorage() {
-    let solves = localStorage.getItem("solves");
-    let solvesArray;
+cube.displayImage = function displayImage(svg) {
+    $("#image").html(svg);
+};
 
-    if (solves && (solvesArray = JSON.parse(solves))) {
-        cube.populateSolvesDiv(solvesArray);
+cube.saveSolves = function saveSolves() {
+    let solvesArrayAsString = JSON.stringify(cube.solves);
+    ajax.post(cube.baseURL + "/save", { "solves": btoa(solvesArrayAsString) }, undefined);
+};
+
+cube.retrieveSolves = function retrieveSolves() {
+    ajax.get(cube.baseURL + "/retrieve", undefined, cube.processSolves);
+};
+
+cube.processSolves = function processSolves(base64response) {
+    if (base64response) {
+        let solvesStr = atob(base64response);
+        let solvesArray = JSON.parse(solvesStr);
+
+        cube.solves = cube.clone(solvesArray);
+        cube.populateSolvesDiv();
     }
 };
 
-cube.populateSolvesDiv = function populateSolvesDiv(solvesArray) {
-    let list = $("ol.solvesList");
+cube.populateSolvesDiv = function populateSolvesDiv() {
+    let list = $("<ol>").addClass("solvesList").prop("reversed", true);
 
-    if (!list.length)
-        list = $("<ol>").addClass("solvesList").prop("reversed", true);
-
-    for (let x in solvesArray) {
-        let solve = solvesArray[x];
+    for (let x in cube.solves) {
+        let solve = cube.solves[x];
 
         let solveStr = JSON.stringify(solve);
         let solveBase64 = btoa(solveStr);
@@ -77,7 +89,11 @@ cube.populateSolvesDiv = function populateSolvesDiv(solvesArray) {
         let tspan = $("<span>").text(solve.time).addClass("solveTime");
         let infoSpan = $("<span>").text(solveBase64).addClass("solveInfo").hide();
         let delSpan = $("<i>").addClass("fa fa-times-circle").on("click", function() {
-            alert("Going to delete this in a future version");
+            return (function (index) {
+                cube.solves.splice(index, 1);
+                cube.populateSolvesDiv();
+                cube.saveSolves();
+            })(x);
         });
 
         let li = $("<li>").addClass("solveItem").append(tspan).append(infoSpan).append(delSpan);
@@ -92,7 +108,7 @@ cube.populateSolvesDiv = function populateSolvesDiv(solvesArray) {
 };
 
 cube.calculateAverages = function calculateAverages() {
-    let objArray = JSON.parse(JSON.stringify(cube.collectSolvesToArray()));
+    let objArray = cube.clone(cube.solves);
 
     let timeArray = [];
     objArray.forEach(function (val) {
@@ -144,29 +160,6 @@ cube.calculateAveragesWork = function calculateAveragesWork(theArray, numberToAv
     return avg;
 };
 
-cube.collectSolvesToArray = function collectSolvesToArray() {
-
-    let timeArray = [];
-
-    $(".solveItem").each(function () {
-        let self = $(this);
-        let solveObj = {
-            "time": self.find(".solveTime").text(),
-            "scramble": self.find(".solveInfo").text(),
-            "date": self.find(".solveDate").text()
-        };
-
-        timeArray.unshift(solveObj);
-    });
-
-    return timeArray;
-};
-
-cube.setSolvesToLocalStorage = function setSolvesToLocalStorage() {
-    let solvesArray = cube.collectSolvesToArray();
-    if (solvesArray.length && localStorage.setItem("solves", JSON.stringify(solvesArray)));
-};
-
 cube.startStopClock = function startStopClock(event) {
 
     if (event.code == "Space") {
@@ -195,8 +188,9 @@ cube.startStopClock = function startStopClock(event) {
                 "time": $("#clock").text(),
                 "date": (new Date()).getTime()
             };
-            cube.populateSolvesDiv([solveObj]);
-            cube.setSolvesToLocalStorage();
+
+            cube.solves.push(solveObj);
+            cube.populateSolvesDiv();
         }
     }
 };
@@ -245,4 +239,8 @@ cube.convertMillisToTimeString = function convertMillisToTimeString(toConvert) {
         millis = "0" + millis;
 
     return  minutes + ":" + seconds + "." + millis;
+};
+
+cube.clone = function clone(jsonObject) {
+    return JSON.parse(JSON.stringify(jsonObject));
 };
