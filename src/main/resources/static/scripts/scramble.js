@@ -1,8 +1,9 @@
 window.cube = {};
 
-cube.baseURL = "http://localhost:8080";
-// cube.baseURL = "https://monkeyspaz.com/scrambler";
+// cube.baseURL = "http://localhost:8080";
+cube.baseURL = "https://monkeyspaz.com/scrambler";
 
+cube.puzzle = "333";
 cube.solves = [];
 
 cube.onload = function onload() {
@@ -19,7 +20,7 @@ cube.onload = function onload() {
 };
 
 cube.getScramble = function getScramble() {
-    ajax.get(cube.baseURL + "/scramble/.json?=333", undefined, cube.processScramble);
+    ajax.get(cube.baseURL + "/scramble/.json?=" + cube.puzzle, undefined, cube.processScramble);
 };
 
 cube.processScramble = function processScramble(scrambleResponse) {
@@ -55,6 +56,9 @@ cube.processScramble = function processScramble(scrambleResponse) {
 };
 
 cube.getImage = function getImage(puzzle, scramble) {
+    if ((typeof puzzle) == "object")
+        puzzle = cube.puzzle;
+
     ajax.get(cube.baseURL + "/view/" + puzzle + ".svg?scramble=" + scramble, undefined, cube.displayImage);
 };
 
@@ -64,13 +68,13 @@ cube.displayImage = function displayImage(svg) {
 
 cube.saveSolves = function saveSolves() {
     let solvesArrayAsString = JSON.stringify(cube.solves);
-    let solveMethod = $('input[name="solveMethod"]:checked').val();
+    let solveMethod = cube.getSolveMethod();
 
     ajax.post(cube.baseURL + "/save", { "solves": btoa(solvesArrayAsString), "solveMethod": solveMethod }, undefined);
 };
 
 cube.retrieveSolves = function retrieveSolves() {
-    let solveMethod = $('input[name="solveMethod"]:checked').val();
+    let solveMethod = cube.getSolveMethod();
     ajax.get(cube.baseURL + "/retrieve", { "solveMethod": solveMethod }, cube.processSolves);
 };
 
@@ -87,27 +91,33 @@ cube.processSolves = function processSolves(base64response) {
 };
 
 cube.populateSolvesDiv = function populateSolvesDiv() {
-    let list = $("<ol>").addClass("solvesList").prop("reversed", true);
+    let list;
 
-    for (let x in cube.solves) {
-        let solve = cube.solves[x];
+    if (cube.solves.length == 0)
+        list = $("<span>").text("No stored " + cube.getSolveMethod() + " solves");
+    else {
+        list = $("<ol>").addClass("solvesList").prop("reversed", true);
 
-        let solveStr = JSON.stringify(solve);
-        let solveBase64 = btoa(solveStr);
+        for (let x in cube.solves) {
+            let solve = cube.solves[x];
 
-        let tspan = $("<span>").text(solve.time).addClass("solveTime");
-        let infoSpan = $("<span>").text(solveBase64).addClass("solveInfo").hide();
-        let delSpan = $("<i>").addClass("fa fa-times-circle").on("click", function() {
-            return (function (index) {
-                cube.solves.splice(index, 1);
-                cube.populateSolvesDiv();
-                cube.saveSolves();
-            })(x);
-        });
+            let solveStr = JSON.stringify(solve);
+            let solveBase64 = btoa(solveStr);
 
-        let li = $("<li>").addClass("solveItem").append(tspan).append(infoSpan).append(delSpan);
+            let tspan = $("<span>").text(solve.time).addClass("solveTime");
+            let infoSpan = $("<span>").text(solveBase64).addClass("solveInfo").hide();
+            let delSpan = $("<i>").addClass("fa fa-times-circle").on("click", function () {
+                return (function (index) {
+                    cube.solves.splice(index, 1);
+                    cube.populateSolvesDiv();
+                    cube.saveSolves();
+                })(x);
+            });
 
-        list.prepend(li);
+            let li = $("<li>").addClass("solveItem").append(tspan).append(infoSpan).append(delSpan);
+
+            list.prepend(li);
+        }
     }
 
     $("#solves").html("");
@@ -253,4 +263,8 @@ cube.convertMillisToTimeString = function convertMillisToTimeString(toConvert) {
 
 cube.clone = function clone(jsonObject) {
     return JSON.parse(JSON.stringify(jsonObject));
+};
+
+cube.getSolveMethod = function getSolveMethod() {
+    return $('input[name="solveMethod"]:checked').val();
 };

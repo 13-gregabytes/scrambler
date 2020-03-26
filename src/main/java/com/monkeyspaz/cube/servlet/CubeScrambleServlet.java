@@ -1,4 +1,4 @@
-package bochan.greg.cube.servlet;
+package com.monkeyspaz.cube.servlet;
 
 import net.gnehzr.tnoodle.server.webscrambles.ScrambleHandler;
 
@@ -7,8 +7,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
-public class GregScrambleServlet extends ScrambleHandler {
-    public GregScrambleServlet() {
+public class CubeScrambleServlet extends ScrambleHandler {
+    public CubeScrambleServlet() {
         super();
     }
 

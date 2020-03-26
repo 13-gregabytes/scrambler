@@ -1,9 +1,9 @@
-package bochan.greg.cube;
+package com.monkeyspaz.cube;
 
-import bochan.greg.cube.filter.GregCORSFilter;
-import bochan.greg.cube.servlet.GregRetrieveServlet;
-import bochan.greg.cube.servlet.GregSaveServlet;
-import bochan.greg.cube.servlet.GregScrambleServlet;
+import com.monkeyspaz.cube.filter.CubeCORSFilter;
+import com.monkeyspaz.cube.servlet.SolveRetrieveServlet;
+import com.monkeyspaz.cube.servlet.SolveSaveServlet;
+import com.monkeyspaz.cube.servlet.CubeScrambleServlet;
 import net.gnehzr.tnoodle.server.webscrambles.ScrambleViewHandler;
 import net.gnehzr.tnoodle.utils.BadLazyClassDescriptionException;
 import org.springframework.boot.SpringApplication;
@@ -19,7 +19,7 @@ public class CubeShuffleApplication {
 
     @Bean
     public ServletRegistrationBean registerScrambleServlet() {
-        ServletRegistrationBean bean = new ServletRegistrationBean(new GregScrambleServlet(), "/scramble/*");
+        ServletRegistrationBean bean = new ServletRegistrationBean(new CubeScrambleServlet(), "/scramble/*");
         bean.setLoadOnStartup(1);
         return bean;
     }
@@ -42,21 +42,21 @@ public class CubeShuffleApplication {
 
     @Bean
     public ServletRegistrationBean registerRetrieveServlet() {
-        ServletRegistrationBean bean = new ServletRegistrationBean(new GregRetrieveServlet(), "/retrieve");
+        ServletRegistrationBean bean = new ServletRegistrationBean(new SolveRetrieveServlet(), "/retrieve");
         bean.setLoadOnStartup(1);
         return bean;
     }
 
     @Bean
     public ServletRegistrationBean registerSaveServlet() {
-        ServletRegistrationBean bean = new ServletRegistrationBean(new GregSaveServlet(), "/save");
+        ServletRegistrationBean bean = new ServletRegistrationBean(new SolveSaveServlet(), "/save");
         bean.setLoadOnStartup(1);
         return bean;
     }
 
     @Bean
     public FilterRegistrationBean registerScrambleFilter() {
-        FilterRegistrationBean bean = new FilterRegistrationBean(new GregCORSFilter());
+        FilterRegistrationBean bean = new FilterRegistrationBean(new CubeCORSFilter());
 
         bean.addUrlPatterns("/*");
 

@@ -1,4 +1,4 @@
-package bochan.greg.cube.servlet;
+package com.monkeyspaz.cube.servlet;
 
 import net.gnehzr.tnoodle.server.webscrambles.ScrambleViewHandler;
 import net.gnehzr.tnoodle.utils.BadLazyClassDescriptionException;
@@ -8,8 +8,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
-public class GregViewServlet extends ScrambleViewHandler {
-    public GregViewServlet() throws IOException, BadLazyClassDescriptionException {
+public class ScrambleViewServlet extends ScrambleViewHandler {
+    public ScrambleViewServlet() throws IOException, BadLazyClassDescriptionException {
         super();
     }
 

@@ -1,4 +1,4 @@
-package bochan.greg.cube.exception;
+package com.monkeyspaz.cube.exception;
 
 public class ScrambleParseException extends Exception {
     public ScrambleParseException() {

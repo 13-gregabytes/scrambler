@@ -6,7 +6,7 @@
 <head>
   <meta charset="UTF-8">
   <link rel="shortcut icon" href="images/favicon.ico?v=<%=System.currentTimeMillis()%>" type="image/x-icon">
-  <title>OpenText Augmented Authoring</title>
+  <title>Cube timings</title>
 
   <script type="text/javascript" src="scripts/libs/jquery-3.4.1/jquery-3.4.1.js"></script>
   <script type="text/javascript" src="scripts/libs/jquery-ui-1.12.1/jquery-ui.js"></script>

@@ -1,4 +1,4 @@
-package bochan.greg.cube.exception;
+package com.monkeyspaz.cube.exception;
 
 public class TimeParseException extends Exception {
     public TimeParseException() {

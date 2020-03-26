@@ -52,7 +52,7 @@ task gregDeploy(type: Jar) {
         into('/')
     }
 
-    from('src/main/resources/monkeyspaz') {
+    from('src/main/resources/remote') {
         into("/WEB-INF")
         includes = ['web.xml']
     }
@@ -63,16 +63,16 @@ task gregDeploy(type: Jar) {
     }
 
     from {
-        into('WEB-INF/lib')
+        into('/WEB-INF/lib')
         configurations.extraLibs.collect { it.isDirectory() ? it : zipTree(it) }
     }
 
     from (sourceSets.main.output) {
-        into('WEB-INF/classes')
+        into('/WEB-INF/classes')
         excludes = [
             '**/CubeShuffleApplication*',
             '**/JspController*',
-            '**/monkeyspaz',
+            '**/remote',
             '**/static',
             'application.properties'
         ]

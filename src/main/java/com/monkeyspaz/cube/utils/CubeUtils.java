@@ -1,14 +1,13 @@
-package bochan.greg.cube.utils;
+package com.monkeyspaz.cube.utils;
 
-import bochan.greg.cube.exception.DateParseException;
-import bochan.greg.cube.exception.ScrambleParseException;
-import bochan.greg.cube.exception.TimeParseException;
+import com.monkeyspaz.cube.exception.DateParseException;
+import com.monkeyspaz.cube.exception.ScrambleParseException;
+import com.monkeyspaz.cube.exception.TimeParseException;
 
-import java.net.SocketException;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-public class GregUtils {
+public class CubeUtils {
     public final static Pattern SCRAMBLE_PATTERN = Pattern.compile("^[UDLRFB '2]+$");
     public final static Pattern TIME_PATTERN = Pattern.compile("^[0-9]{2}:[0-9]{2}\\.[0-9]{2}$");
     public final static Pattern DATE_PATTERN = Pattern.compile("^[0-9]{13}$");
