@@ -13,6 +13,11 @@ import net.gnehzr.tnoodle.server.webscrambles.ScrambleViewHandler;
 import net.gnehzr.tnoodle.utils.BadLazyClassDescriptionException;
 
 public class GregSaveServlet extends HttpServlet {
+    enum SolveMethod {
+        ROUX,
+        CFOP;
+    }
+
     public GregSaveServlet() {
         super();
     }
@@ -21,15 +26,28 @@ public class GregSaveServlet extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
         String solvesBase64 = request.getParameter("solves");
 
-        File solveFile = new File("solve_file.txt");
+        String solveMethod = request.getParameter("solveMethod");
 
-        if (!solveFile.exists())
-            solveFile.createNewFile();
+        String responseString = "";
 
-        try (BufferedWriter bw = new BufferedWriter(new FileWriter(solveFile))) {
-            bw.write(solvesBase64);
-            bw.flush();
-        } catch (Exception e) {
+        try {
+            SolveMethod.valueOf(solveMethod.toUpperCase());
+
+            File solveFile = new File(String.format("solve_%s.txt", solveMethod.toLowerCase()));
+
+            if (!solveFile.exists())
+                solveFile.createNewFile();
+
+            try (BufferedWriter bw = new BufferedWriter(new FileWriter(solveFile))) {
+                bw.write(solvesBase64);
+                bw.flush();
+            } catch (Throwable t1) {
+                responseString = "Error writing to server file.\n" + t1.getMessage();
+            }
+        } catch (Throwable t2) {
+            responseString = "Invalid solve method.\n" + t2.getMessage();
         }
+
+        response.getWriter().write(responseString);
     }
 }

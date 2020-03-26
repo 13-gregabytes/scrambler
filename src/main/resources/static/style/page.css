@@ -40,11 +40,16 @@ div.break {
 div#image,
 div#timings {
     width: 100%;
-    height: calc(((100% / 3) * 2) - 3px);
+    height: calc(((100% / 3) * 2) - 10vh);
 }
 
 div#timings {
     font-family: consolas;
+}
+
+div#buttons {
+    margin: 1.4vh;
+    text-align: center;
 }
 
 svg {

@@ -10,6 +10,10 @@ cube.onload = function onload() {
         cube.startStopClock(event)
     });
 
+    $("input[type='radio']").on("click", function() {
+        cube.retrieveSolves();
+    }).checkboxradio({icon: false});
+
     cube.getScramble();
     cube.retrieveSolves();
 };
@@ -60,21 +64,26 @@ cube.displayImage = function displayImage(svg) {
 
 cube.saveSolves = function saveSolves() {
     let solvesArrayAsString = JSON.stringify(cube.solves);
-    ajax.post(cube.baseURL + "/save", { "solves": btoa(solvesArrayAsString) }, undefined);
+    let solveMethod = $('input[name="solveMethod"]:checked').val();
+
+    ajax.post(cube.baseURL + "/save", { "solves": btoa(solvesArrayAsString), "solveMethod": solveMethod }, undefined);
 };
 
 cube.retrieveSolves = function retrieveSolves() {
-    ajax.get(cube.baseURL + "/retrieve", undefined, cube.processSolves);
+    let solveMethod = $('input[name="solveMethod"]:checked').val();
+    ajax.get(cube.baseURL + "/retrieve", { "solveMethod": solveMethod }, cube.processSolves);
 };
 
 cube.processSolves = function processSolves(base64response) {
+    let solvesArray = [];
+
     if (base64response) {
         let solvesStr = atob(base64response);
-        let solvesArray = JSON.parse(solvesStr);
-
-        cube.solves = cube.clone(solvesArray);
-        cube.populateSolvesDiv();
+        solvesArray = JSON.parse(solvesStr);
     }
+
+    cube.solves = cube.clone(solvesArray);
+    cube.populateSolvesDiv();
 };
 
 cube.populateSolvesDiv = function populateSolvesDiv() {
@@ -190,6 +199,7 @@ cube.startStopClock = function startStopClock(event) {
             };
 
             cube.solves.push(solveObj);
+            cube.saveSolves();
             cube.populateSolvesDiv();
         }
     }
