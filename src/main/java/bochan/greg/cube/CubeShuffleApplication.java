@@ -1,9 +1,9 @@
-package bochan.greg.main;
+package bochan.greg.cube;
 
-import bochan.greg.main.filter.GregCORSFilter;
-import bochan.greg.main.servlet.GregRetrieveServlet;
-import bochan.greg.main.servlet.GregSaveServlet;
-import bochan.greg.main.servlet.GregScrambleServlet;
+import bochan.greg.cube.filter.GregCORSFilter;
+import bochan.greg.cube.servlet.GregRetrieveServlet;
+import bochan.greg.cube.servlet.GregSaveServlet;
+import bochan.greg.cube.servlet.GregScrambleServlet;
 import net.gnehzr.tnoodle.server.webscrambles.ScrambleViewHandler;
 import net.gnehzr.tnoodle.utils.BadLazyClassDescriptionException;
 import org.springframework.boot.SpringApplication;

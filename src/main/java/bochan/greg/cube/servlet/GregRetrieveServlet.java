@@ -1,11 +1,10 @@
-package bochan.greg.main.servlet;
+package bochan.greg.cube.servlet;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.*;
-import java.util.Base64;
 
 public class GregRetrieveServlet extends HttpServlet {
     enum SolveMethod {

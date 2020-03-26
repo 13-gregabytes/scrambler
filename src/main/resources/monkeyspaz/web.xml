@@ -6,7 +6,7 @@
 	<filter>
 		<filter-name>CORSFilter</filter-name>
 		<display-name>CORSFilter</display-name>
-		<filter-class>bochan.greg.main.filter.GregCORSFilter</filter-class>
+		<filter-class>bochan.greg.cube.filter.GregCORSFilter</filter-class>
 	</filter>
 	<filter-mapping>
 		<filter-name>CORSFilter</filter-name>
@@ -16,7 +16,7 @@
 	<servlet>
 		<servlet-name>Scrambler</servlet-name>
 		<display-name>Scrambler</display-name>
-		<servlet-class>bochan.greg.main.servlet.GregScrambleServlet</servlet-class>
+		<servlet-class>bochan.greg.cube.servlet.GregScrambleServlet</servlet-class>
 	</servlet>
 	<servlet-mapping>
 		<servlet-name>Scrambler</servlet-name>
@@ -26,7 +26,7 @@
 	<servlet>
 		<servlet-name>Viewer</servlet-name>
 		<display-name>Viewer</display-name>
-		<servlet-class>bochan.greg.main.servlet.GregViewServlet</servlet-class>
+		<servlet-class>bochan.greg.cube.servlet.GregViewServlet</servlet-class>
 	</servlet>
 	<servlet-mapping>
 		<servlet-name>Viewer</servlet-name>

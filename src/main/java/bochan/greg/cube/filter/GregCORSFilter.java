@@ -1,4 +1,4 @@
-package bochan.greg.main.filter;
+package bochan.greg.cube.filter;
 
 import javax.servlet.*;
 import javax.servlet.http.HttpServletRequest;

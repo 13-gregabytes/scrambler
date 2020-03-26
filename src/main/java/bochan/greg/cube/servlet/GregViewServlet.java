@@ -1,14 +1,15 @@
-package bochan.greg.main.servlet;
+package bochan.greg.cube.servlet;
 
-import net.gnehzr.tnoodle.server.webscrambles.ScrambleHandler;
+import net.gnehzr.tnoodle.server.webscrambles.ScrambleViewHandler;
+import net.gnehzr.tnoodle.utils.BadLazyClassDescriptionException;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
-public class GregScrambleServlet extends ScrambleHandler {
-    public GregScrambleServlet() {
+public class GregViewServlet extends ScrambleViewHandler {
+    public GregViewServlet() throws IOException, BadLazyClassDescriptionException {
         super();
     }
 
