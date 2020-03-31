@@ -1,5 +1,5 @@
 div {
-    /* border: 1px solid black; */
+    border: 1px solid darkslategray;
 }
 
 body {
@@ -10,25 +10,24 @@ body {
     height: calc(100vh - 4px);
 }
 
-#left,
-#right {
+.left,
+.right {
     width: calc(50% - 3px);
     float: left;
-    height: 100%;
+    height: calc(100vh - 8px);
 }
 
-div#scramble,
-div#clock {
+div.scramble,
+div.clock {
     width: 100%;
-    height: calc((100% / 3) - 3px);
 }
 
-div#scramble > span {
-    margin: 1.4vh;
+div.scramble > span {
+    margin: 0.4em;
     float: left;
 }
 
-div#scramble > span:hover {
+div.scramble > span:hover {
     cursor: pointer;
     color: red;
 }
@@ -37,19 +36,38 @@ div.break {
     clear: both;
 }
 
-div#image,
-div#timings {
+div.image {
     width: 100%;
-    height: calc(((100% / 3) * 2) - 10vh);
+    float: left;
+    height: 65%;
 }
 
-div#timings {
+div.timings {
+    width: 100%;
+    float: left;
+    height: 65%;
+}
+
+div.timings {
     font-family: consolas;
 }
 
-div#buttons {
-    margin: 1.4vh;
+div.averages {
+    height: 100%;
+    float: left;
+    width: 56%;
+    text-align: right;
+    padding: 0 4% 0 0;
+}
+
+.buttons {
+    padding: 2%;
     text-align: center;
+}
+
+.buttons button {
+    background-color: #d04343;
+    color: white;
 }
 
 svg {
@@ -57,7 +75,7 @@ svg {
     height: 100%;
 }
 
-rect[fill="#ff0000"] {
+rect[fill=".ff0000"] {
     fill: #c70000;
 }
 
@@ -65,24 +83,21 @@ rect[fill="#0000ff"] {
     fill: #0045ef;
 }
 
-div#clock {
-    font-size: 10vw;
+div.clock {
+    font-size: 4.5em;
     text-align: center;
-    line-height: 26vh;
 }
 
-ol.solvesList {
-    margin: 6vh;
-}
+ol.solvesList {margin: 0 0 0 30%;}
 
-div#solves,
-div#averages {
+div.solves {
     height: 100%;
     float: left;
-    width: calc(100% / 2 - 3px);
+    width: 39%;
+    text-align: center;
 }
 
-div#solves {
+div.solves {
     overflow: auto;
 }
 

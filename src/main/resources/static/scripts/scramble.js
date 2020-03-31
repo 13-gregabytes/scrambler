@@ -1,7 +1,8 @@
 window.cube = {};
 
+cube.baseURL = "http://192.168.0.29:8080";
 // cube.baseURL = "http://localhost:8080";
-cube.baseURL = "https://monkeyspaz.com/scrambler";
+// cube.baseURL = "https://monkeyspaz.com/scrambler";
 
 cube.puzzle = "333";
 cube.solves = [];
@@ -14,6 +15,10 @@ cube.onload = function onload() {
     $("input[type='radio']").on("click", function() {
         cube.retrieveSolves();
     }).checkboxradio({icon: false});
+
+    $("button").on("click", function() {
+        cube.getScramble();
+    }).button();
 
     cube.getScramble();
     cube.retrieveSolves();
@@ -28,7 +33,7 @@ cube.processScramble = function processScramble(scrambleResponse) {
     let scramble = scrambleJSON[0].scrambles[0];
     let puzzle = scrambleJSON[0].scrambler;
 
-    let scrambleDiv = $("#scramble");
+    let scrambleDiv = $(".scramble");
 
     scrambleDiv.html("");
 
@@ -63,7 +68,7 @@ cube.getImage = function getImage(puzzle, scramble) {
 };
 
 cube.displayImage = function displayImage(svg) {
-    $("#image").html(svg);
+    $(".image").html(svg);
 };
 
 cube.saveSolves = function saveSolves() {
@@ -120,8 +125,8 @@ cube.populateSolvesDiv = function populateSolvesDiv() {
         }
     }
 
-    $("#solves").html("");
-    $("#solves").append(list);
+    $(".solves").html("");
+    $(".solves").append(list);
 
     cube.calculateAverages();
 };
@@ -140,26 +145,27 @@ cube.calculateAverages = function calculateAverages() {
     bestArray.sort(function(a, b) { return a - b; });
     worstArray.sort(function(a, b) { return b - a; });
 
-    $("#averages").html("");
+    let averagesDiv = $(".averages");
+    averagesDiv.html("");
 
 
     if (timeArray.length > 0) {
-        $("#averages").append($("<div>").html("Avg: " + cube.convertMillisToTimeString(cube.calculateAveragesWork(timeArray, timeArray.length))));
+        averagesDiv.append($("<div>").addClass("avg").html("Avg: " + cube.convertMillisToTimeString(cube.calculateAveragesWork(timeArray, timeArray.length))));
     }
 
     if (timeArray.length > 2) {
-        $("#averages").append($("<div>").html("Best 3 Avg: " + cube.convertMillisToTimeString(cube.calculateAveragesWork(bestArray, 3))));
-        $("#averages").append($("<div>").html("Worst 3 Avg: " + cube.convertMillisToTimeString(cube.calculateAveragesWork(worstArray, 3))));
+        averagesDiv.append($("<div>").addClass("avg").html("Best 3 Avg: " + cube.convertMillisToTimeString(cube.calculateAveragesWork(bestArray, 3))));
+        averagesDiv.append($("<div>").addClass("avg").html("Worst 3 Avg: " + cube.convertMillisToTimeString(cube.calculateAveragesWork(worstArray, 3))));
     }
 
     if (timeArray.length > 4) {
-        $("#averages").append($("<div>").html("Best 5 Avg: " + cube.convertMillisToTimeString(cube.calculateAveragesWork(bestArray, 5))));
-        $("#averages").append($("<div>").html("Worst 5 Avg: " + cube.convertMillisToTimeString(cube.calculateAveragesWork(worstArray, 5))));
+        averagesDiv.append($("<div>").addClass("avg").html("Best 5 Avg: " + cube.convertMillisToTimeString(cube.calculateAveragesWork(bestArray, 5))));
+        averagesDiv.append($("<div>").addClass("avg").html("Worst 5 Avg: " + cube.convertMillisToTimeString(cube.calculateAveragesWork(worstArray, 5))));
     }
 
     if (timeArray.length > 9) {
-        $("#averages").append($("<div>").html("Best 10 Avg: " + cube.convertMillisToTimeString(cube.calculateAveragesWork(bestArray, 10))));
-        $("#averages").append($("<div>").html("Worst 10 Avg: " + cube.convertMillisToTimeString(cube.calculateAveragesWork(worstArray, 10))));
+        averagesDiv.append($("<div>").addClass("avg").html("Best 10 Avg: " + cube.convertMillisToTimeString(cube.calculateAveragesWork(bestArray, 10))));
+        averagesDiv.append($("<div>").addClass("avg").html("Worst 10 Avg: " + cube.convertMillisToTimeString(cube.calculateAveragesWork(worstArray, 10))));
     }
 };
 
@@ -185,7 +191,7 @@ cube.startStopClock = function startStopClock(event) {
         if (cube.clockStopped)
             cube.resetClock();
         else if (cube.clockInterval == undefined) {
-            let clockDiv = $("#clock");
+            let clockDiv = $(".clock");
 
             cube.clockInterval = setInterval(function clockStuff() {
                 let t = (new Date).getTime();
@@ -204,7 +210,7 @@ cube.startStopClock = function startStopClock(event) {
 
             let solveObj = {
                 "scramble": $(".totalScramble").text(),
-                "time": $("#clock").text(),
+                "time": $(".clock").text(),
                 "date": (new Date()).getTime()
             };
 
@@ -221,7 +227,7 @@ cube.resetClock = function resetClock() {
     cube.clockInterval = undefined;
     cube.clockStart = undefined;
 
-    $("#clock").html("00:00.00");
+    $(".clock").html("00:00.00");
 
     cube.getScramble();
 };

@@ -5,6 +5,7 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
   <link rel="shortcut icon" href="images/favicon.ico?v=<%=System.currentTimeMillis()%>" type="image/x-icon">
   <title>Cube timings</title>
 
@@ -24,23 +25,26 @@
 
 <body>
 
-<div id="left">
-  <div id="scramble"></div>
+<div class="left">
+  <div class="buttons">
+    <button value="Scramble">Scramble</button>
+  </div>
+  <div class="scramble"></div>
   <div class="break"></div>
-  <div id="image"></div>
+  <div class="image"></div>
 </div>
-<div id="right">
-  <div id="buttons">
+<div class="right">
+  <div class="buttons">
     <input type="radio" name="solveMethod" id="roux" value="roux" checked>
     <label for="roux">Roux</label>
     <input type="radio" name="solveMethod" id="cfop" value="cfop">
     <label for="cfop">CFOP</label>
   </div>
-  <div id="clock">00:00.00</div>
+  <div class="clock">00:00.00</div>
   <div class="break"></div>
-  <div id="timings">
-    <div id="solves">No times yet</div>
-    <div id="averages"></div>
+  <div class="timings">
+    <div class="solves">No times yet</div>
+    <div class="averages"></div>
   </div>
 </div>
 
