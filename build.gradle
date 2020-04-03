@@ -36,6 +36,7 @@ dependencies {
 }
 
 task gregDeploy(type: Jar) {
+
     archiveName 'scrambler.war'
 
     manifest {

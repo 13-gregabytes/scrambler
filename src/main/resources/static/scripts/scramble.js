@@ -1,8 +1,4 @@
-window.cube = {};
-
-// cube.baseURL = "http://192.168.0.29:8080";
-// cube.baseURL = "http://localhost:8080";
-cube.baseURL = "https://monkeyspaz.com";
+window.cube = window.cube || {};
 
 cube.puzzle = "333";
 cube.solves = [];
