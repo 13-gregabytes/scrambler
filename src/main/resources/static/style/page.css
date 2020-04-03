@@ -1,5 +1,5 @@
 div {
-    border: 1px solid darkslategray;
+    border: 1px solid TRANSPARENT;
 }
 
 body {
@@ -14,7 +14,16 @@ body {
 .right {
     width: calc(50% - 3px);
     float: left;
-    height: calc(100vh - 8px);
+    height: calc(100vh - 1%);
+}
+
+@media (max-width: 600px) {
+    .left,
+    .right {
+        width: calc(100vw - 1%);
+        float: left;
+        height: calc(50% - 3px);
+    }
 }
 
 div.scramble,
@@ -43,9 +52,10 @@ div.image {
 }
 
 div.timings {
-    width: 100%;
+    width: 82%;
     float: left;
     height: 65%;
+    padding: 0 9%;
 }
 
 div.timings {
@@ -55,9 +65,9 @@ div.timings {
 div.averages {
     height: 100%;
     float: left;
-    width: 56%;
+    width: 53%;
     text-align: right;
-    padding: 0 4% 0 0;
+    padding: 2%;
 }
 
 .buttons {
@@ -84,21 +94,31 @@ rect[fill="#0000ff"] {
 }
 
 div.clock {
-    font-size: 4.5em;
     text-align: center;
 }
 
-ol.solvesList {margin: 0 0 0 30%;}
+div.clock {
+    font-size: 4.5em;
+}
+
+@media (max-width: 600px) {
+    div.clock {
+        font-size: 3em;
+    }
+}
+
+ol.solvesList {margin: 0 0 0 30%;padding: 0;text-align: left;}
 
 div.solves {
     height: 100%;
     float: left;
-    width: 39%;
+    width: 38%;
     text-align: center;
 }
 
 div.solves {
     overflow: auto;
+    padding: 2%;
 }
 
 i.fa.fa-times-circle {

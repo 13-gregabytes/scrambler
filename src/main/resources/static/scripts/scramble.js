@@ -1,8 +1,8 @@
 window.cube = {};
 
-cube.baseURL = "http://192.168.0.29:8080";
+// cube.baseURL = "http://192.168.0.29:8080";
 // cube.baseURL = "http://localhost:8080";
-// cube.baseURL = "https://monkeyspaz.com/scrambler";
+cube.baseURL = "https://monkeyspaz.com";
 
 cube.puzzle = "333";
 cube.solves = [];
@@ -18,6 +18,9 @@ cube.onload = function onload() {
 
     $("button").on("click", function() {
         cube.getScramble();
+    }).on("keyup keydown keypress", function(event) {
+        event.preventDefault();
+        return false;
     }).button();
 
     cube.getScramble();
@@ -25,7 +28,7 @@ cube.onload = function onload() {
 };
 
 cube.getScramble = function getScramble() {
-    ajax.get(cube.baseURL + "/scramble/.json?=" + cube.puzzle, undefined, cube.processScramble);
+    ajax.get(cube.baseURL + "/scrambler/scramble/.json?=" + cube.puzzle, undefined, cube.processScramble);
 };
 
 cube.processScramble = function processScramble(scrambleResponse) {
@@ -64,7 +67,7 @@ cube.getImage = function getImage(puzzle, scramble) {
     if ((typeof puzzle) == "object")
         puzzle = cube.puzzle;
 
-    ajax.get(cube.baseURL + "/view/" + puzzle + ".svg?scramble=" + scramble, undefined, cube.displayImage);
+    ajax.get(cube.baseURL + "/scrambler/view/" + puzzle + ".svg?scramble=" + scramble, undefined, cube.displayImage);
 };
 
 cube.displayImage = function displayImage(svg) {
@@ -75,12 +78,12 @@ cube.saveSolves = function saveSolves() {
     let solvesArrayAsString = JSON.stringify(cube.solves);
     let solveMethod = cube.getSolveMethod();
 
-    ajax.post(cube.baseURL + "/save", { "solves": btoa(solvesArrayAsString), "solveMethod": solveMethod }, undefined);
+    ajax.post(cube.baseURL + "/scrambler/save", { "solves": btoa(solvesArrayAsString), "solveMethod": solveMethod }, undefined);
 };
 
 cube.retrieveSolves = function retrieveSolves() {
     let solveMethod = cube.getSolveMethod();
-    ajax.get(cube.baseURL + "/retrieve", { "solveMethod": solveMethod }, cube.processSolves);
+    ajax.get(cube.baseURL + "/scrambler/retrieve", { "solveMethod": solveMethod }, cube.processSolves);
 };
 
 cube.processSolves = function processSolves(base64response) {
