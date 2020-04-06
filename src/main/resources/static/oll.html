@@ -8,38 +8,74 @@
 
   <script type="text/javascript" src="scripts/libs/jquery-3.4.1/jquery-3.4.1.js"></script>
   <script type="text/javascript" src="scripts/libs/jquery-ui-1.12.1/jquery-ui.js"></script>
-  <script type="text/javascript" src="scripts/ajax.js"></script>
-  <script type="text/javascript" src="scripts/scramble.js"></script>
+  <script type="text/javascript" src="scripts/oll.js"></script>
 
   <link rel="stylesheet" type="text/css" href="style/libs/font-awesome-4.7.0/css/font-awesome.css">
   <link rel="stylesheet" type="text/css" href="scripts/libs/jquery-ui-1.12.1/jquery-ui.css">
-  <link rel="stylesheet" type="text/css" href="style/page.css">
+  <link rel="stylesheet" type="text/css" href="style/oll.css">
+
+  <script type="application/javascript">
+    $(document).ready(function () {
+      oll.go();
+    })
+  </script>
 </head>
 
 <body>
-
-<div class="left">
-  <div class="buttons">
-    <button value="Scramble">Scramble</button>
+<div class="templateArea">
+  <div class="template">
+    <div class="row title">
+      <div class="partHV mb mr"></div>
+      <div class="text mb"></div>
+      <div class="partHV mb ml"></div>
+    </div>
+    <div class="cube">
+      <div class="row">
+        <div class="partHV mb mr"></div>
+        <div class="back1 partH mb"></div>
+        <div class="back2 partH mb"></div>
+        <div class="back3 partH mb"></div>
+        <div class="partHV mb ml"></div>
+      </div>
+      <i></i>
+      <div class="row">
+        <div class="left1 partV mr"></div>
+        <div class="top1 full"></div>
+        <div class="top2 full"></div>
+        <div class="top3 full"></div>
+        <div class="right1 partV ml"></div>
+      </div>
+      <i></i>
+      <div class="row">
+        <div class="left2 partV mr"></div>
+        <div class="top4 full"></div>
+        <div class="top5 full"></div>
+        <div class="top6 full"></div>
+        <div class="right2 partV ml"></div>
+      </div>
+      <i></i>
+      <div class="row">
+        <div class="left3 partV mr"></div>
+        <div class="top7 full"></div>
+        <div class="top8 full"></div>
+        <div class="top9 full"></div>
+        <div class="right3 partV ml"></div>
+      </div>
+      <i></i>
+      <div class="row">
+        <div class="partHV mt mr"></div>
+        <div class="front1 partH mt"></div>
+        <div class="front2 partH mt"></div>
+        <div class="front3 partH mt"></div>
+        <div class="partHV mt ml"></div>
+      </div>
+    </div>
+    <div class="row solve">
+      <div class="partHV mt mr"></div>
+      <div class="text mt"></div>
+      <div class="partHV mt ml"></div>
+    </div>
   </div>
-  <div class="scramble"></div>
-  <div class="break"></div>
-  <div class="image"></div>
 </div>
-<div class="right">
-  <div class="buttons">
-    <input type="radio" name="solveMethod" id="roux" value="roux" checked>
-    <label for="roux">Roux</label>
-    <input type="radio" name="solveMethod" id="cfop" value="cfop">
-    <label for="cfop">CFOP</label>
-  </div>
-  <div class="clock">00:00.00</div>
-  <div class="break"></div>
-  <div class="timings">
-    <div class="solves">No times yet</div>
-    <div class="averages"></div>
-  </div>
-</div>
-
 </body>
 </html>

@@ -1,0 +1,82 @@
+body {
+    height: 100vh;
+    width: 100vw;
+}
+
+.templateArea {
+    display: none;
+}
+
+.cube {
+    margin: 25px;
+    background-color: silver;
+    padding: 10px;
+    border-radius: 10px;
+}
+
+.cube,
+.row {
+    float: left;
+}
+
+i {
+    clear: both;
+    display: block;
+}
+
+.mt {
+    margin-top: 10px !important;
+}
+
+.mr {
+    margin-right: 10px !important;
+}
+
+.mb {
+    margin-bottom: 10px !important;
+}
+
+.ml {
+    margin-left: 10px !important;
+}
+
+.cube div.full,
+.cube div.partH,
+.cube div.partV {
+    border: 2px solid black;
+    float: left;
+    margin: 1px;
+}
+
+.cube div.full {
+    height: 50px;
+    width: 50px;
+}
+
+.cube div.text {
+    height: 50px;
+    width: 167px;
+    float: left;
+    text-align: center;
+    font-family: Tahoma, Geneva, sans-serif;
+    word-break: break-word;
+    font-weight: bold;
+    letter-spacing: 2px;
+}
+
+.cube div.partH {
+    height: 15px;
+    width: 50px;
+}
+
+.cube div.partV {
+    height: 50px;
+    width: 15px;
+}
+
+.cube div.partHV {
+    height: 15px;
+    width: 15px;
+    float: left;
+    border: 2px solid transparent;
+}
