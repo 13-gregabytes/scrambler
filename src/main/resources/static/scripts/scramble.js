@@ -1,5 +1,7 @@
 window.cube = window.cube || {};
 
+cube.baseURL = document.location.protocol + '//' + document.location.host + ((document.location.port) ? (':' + document.location.port) : '');
+
 cube.puzzle = "333";
 cube.solves = [];
 

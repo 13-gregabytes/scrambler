@@ -1,6 +1,7 @@
 body {
     height: 100vh;
     width: 100vw;
+    margin: 0;
 }
 
 .templateArea {
@@ -17,6 +18,11 @@ body {
     background-color: silver;
     border-radius: 10px;
     padding: 10px;
+    position: relative;
+    top: 0;
+    left: 0;
+    width: 228px;
+    height: 228px;
 }
 
 .cube,
@@ -58,6 +64,9 @@ div.full {
     width: 50px;
 }
 
+.card.pll .full {
+    background-color: yellow;
+}
 .card .title .text {
     height: 25px;
 }
@@ -88,4 +97,42 @@ div.partHV {
     width: 15px;
     float: left;
     border: 2px solid transparent;
+}
+
+hr {
+    clear: both;
+}
+
+.W {
+    background-color: white;
+}
+
+.O {
+    background-color: orange;
+}
+
+.G {
+    background-color: green;
+}
+
+.B {
+    background-color: #0045ef;
+}
+
+.R {
+    background-color: #c70000;
+}
+
+.Y {
+    background-color: yellow;
+}
+
+canvas {
+    position: relative;
+    top: -198px;
+    left: 30px;
+    height: 166px;
+    width: 166px;
+    z-index: 999;
+    border: 1px solid green;
 }

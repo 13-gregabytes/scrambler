@@ -1,15 +1,3 @@
-<%@ page import="java.util.Properties" %>
-<%@ page import="java.io.FileReader" %>
-<%@ page language="java" contentType="text/html;charset=UTF-8" %>
-<%
-  String path = request.getServletContext().getRealPath("'");
-  path = path.substring(0, path.length() - 1);
-  path += "../";
-
-  Properties props = new Properties();
-  props.load(new FileReader(path + "scrambler.properties"));
-
-%>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -28,9 +16,6 @@
   <link rel="stylesheet" type="text/css" href="style/page.css">
 
   <script>
-    window.cube = window.cube || {};
-    cube.baseURL = "<%=props.getProperty("baseURL")%>";
-
     $(document).ready(cube.onload);
   </script>
 </head>
