@@ -7,11 +7,16 @@ body {
     display: none;
 }
 
-.cube {
+.card {
     margin: 25px;
-    background-color: silver;
     padding: 10px;
+    float: left;
+}
+
+.cube {
+    background-color: silver;
     border-radius: 10px;
+    padding: 10px;
 }
 
 .cube,
@@ -40,22 +45,26 @@ i {
     margin-left: 10px !important;
 }
 
-.cube div.full,
-.cube div.partH,
-.cube div.partV {
+div.full,
+div.partH,
+div.partV {
     border: 2px solid black;
     float: left;
     margin: 1px;
 }
 
-.cube div.full {
+div.full {
     height: 50px;
     width: 50px;
 }
 
-.cube div.text {
+.card .title .text {
+    height: 25px;
+}
+
+div.text {
     height: 50px;
-    width: 167px;
+    width: 248px;
     float: left;
     text-align: center;
     font-family: Tahoma, Geneva, sans-serif;
@@ -64,17 +73,17 @@ i {
     letter-spacing: 2px;
 }
 
-.cube div.partH {
+div.partH {
     height: 15px;
     width: 50px;
 }
 
-.cube div.partV {
+div.partV {
     height: 50px;
     width: 15px;
 }
 
-.cube div.partHV {
+div.partHV {
     height: 15px;
     width: 15px;
     float: left;
