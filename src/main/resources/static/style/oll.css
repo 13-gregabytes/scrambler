@@ -104,27 +104,27 @@ hr {
 }
 
 .W {
-    background-color: white;
+    background-color: white !important;
 }
 
 .O {
-    background-color: orange;
+    background-color: orange !important;
 }
 
 .G {
-    background-color: green;
+    background-color: green !important;
 }
 
 .B {
-    background-color: #0045ef;
+    background-color: #0045ef !important;
 }
 
 .R {
-    background-color: #c70000;
+    background-color: #c70000 !important;
 }
 
 .Y {
-    background-color: yellow;
+    background-color: yellow !important;
 }
 
 canvas {
