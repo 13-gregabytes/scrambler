@@ -38,7 +38,8 @@ LastLayer.go = function go() {
     LastLayer.drawPLL("Ua",
         ["B1:B", "B2:B", "B3:B", "L1:R", "L2:G", "L3:R", "R1:O", "R2:R", "R3:O", "F1:G", "F2:O", "F3:G"],
         ["M2", "U", "M", "U2", "M'", "U", "M2"],
-        ["R", "U'", "R", "U", "R", "U", "R", "U'", "R'", "U'", "R2"]
+        ["R", "U'", "R", "U", "R", "U", "R", "U'", "R'", "U'", "R2"],
+        ["6:4", "4:8", "8:6"]
     );
     LastLayer.drawPLL("Ub",
         ["B1:B", "B2:B", "B3:B", "L1:R", "L2:O", "L3:R", "R1:O", "R2:G", "R3:O", "F1:G", "F2:R", "F3:G"],
@@ -80,7 +81,7 @@ LastLayer.drawOLL = function draw(pattern, squares, solve, altsolve) {
     cube.appendTo("body");
 };
 
-LastLayer.drawPLL = function draw(pattern, squares, solve, altsolve) {
+LastLayer.drawPLL = function draw(pattern, squares, solve, altsolve, moves) {
     let cube = LastLayer.getTemplate().clone().removeClass("template").addClass("card pll").addClass(pattern);
 
     cube.find(".title .text").html(pattern);
@@ -97,40 +98,67 @@ LastLayer.drawPLL = function draw(pattern, squares, solve, altsolve) {
         cube.find("." + square).addClass(color);
     }
 
-    cube.find(".cube").append("<canvas width='166' height='166'>");
+    let canvas = $("<canvas width='166' height='166'>");
 
-/*
-ctx.clearRect(0,0,1000,1000)
+    cube.find(".cube").append(canvas);
 
-ctx.beginPath();
-ctx.moveTo(27, 83);
-ctx.lineTo(139, 83);
-ctx.lineWidth = 3;
-ctx.strokeStyle = "#0000FF";
-ctx.stroke();
-
-ctx.beginPath();
-ctx.arc(27, 83, 5, 0, 2 * Math.PI);
-ctx.fillStyle = "#FF0000";
-ctx.fill();
-
-ctx.beginPath();
-ctx.lineWidth = 1;
-ctx.strokeStyle = "#000000";
-ctx.arc(27, 83, 5, 0, 2 * Math.PI);
-ctx.stroke();
-
-ctx.beginPath();
-ctx.arc(139, 83, 5, 0, 2 * Math.PI);
-ctx.fillStyle = "#00FF00";
-ctx.fill();
-
-ctx.beginPath();
-ctx.lineWidth = 1;
-ctx.strokeStyle = "#000000";
-ctx.arc(139, 83, 5, 0, 2 * Math.PI);
-ctx.stroke();
-*/
+    if (moves)
+        LastLayer.drawMoves(moves, canvas);
 
     cube.appendTo("body");
+};
+
+LastLayer.drawMoves = function drawMoves(moves, canvas) {
+    let ctx = canvas[0].getContext("2d");
+
+    ctx.clearRect(0,0,1000,1000)
+
+    let coords = {
+        "1": { "x": 27,  "y": 27  },
+        "2": { "x": 83,  "y": 27  },
+        "3": { "x": 137, "y": 27  },
+
+        "4": { "x": 27,  "y": 83  },
+        "5": { "x": 83,  "y": 83  },
+        "6": { "x": 137, "y": 83  },
+
+        "7": { "x": 27,  "y": 137 },
+        "8": { "x": 83,  "y": 137 },
+        "9": { "x": 137, "y": 137 }
+    };
+
+    for (let m in moves) {
+        let move = moves[m].split(":");
+        let start = move[0];
+        let end = move[1];
+
+        ctx.beginPath();
+        ctx.moveTo(coords[start].x, coords[start].y);
+        ctx.lineTo(coords[end].x, coords[end].y);
+        ctx.lineWidth = 3;
+        ctx.strokeStyle = "#0000FF";
+        ctx.stroke();
+
+        ctx.beginPath();
+        ctx.arc(coords[start].x, coords[start].y, 5, 0, 2 * Math.PI);
+        ctx.fillStyle = "#00FF00";
+        ctx.fill();
+
+        ctx.beginPath();
+        ctx.lineWidth = 1;
+        ctx.strokeStyle = "#000000";
+        ctx.arc(coords[start].x, coords[start].y, 5, 0, 2 * Math.PI);
+        ctx.stroke();
+
+        ctx.beginPath();
+        ctx.arc(coords[end].x, coords[end].y, 5, 0, 2 * Math.PI);
+        ctx.fillStyle = "#FF0000";
+        ctx.fill();
+
+        ctx.beginPath();
+        ctx.lineWidth = 1;
+        ctx.strokeStyle = "#000000";
+        ctx.arc(coords[end].x, coords[end].y, 5, 0, 2 * Math.PI);
+        ctx.stroke();
+    }
 };
