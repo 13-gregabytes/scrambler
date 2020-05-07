@@ -121,11 +121,38 @@ div.solves {
     padding: 2%;
 }
 
-i.fa.fa-times-circle {
-    color: firebrick;
+i.fa.fa-times-circle,
+i.fa.fa-info-circle {
     padding: 0 0 0 6px;
     font-size: 22px;
     position: relative;
     top: -1px;
     cursor: no-drop;
+}
+
+i.fa.fa-times-circle {
+    color: firebrick;
+}
+
+i.fa.fa-info-circle {
+    color: cornflowerblue;
+}
+
+input[type='radio'] {
+    z-index: 999;
+}
+
+.bestworst {
+    text-shadow: black 1px 1px 1px,
+                 black -1px -1px 1px,
+                 black 1px -1px 1px,
+                 black -1px 1px 1px;
+}
+
+.best {
+    color: lawngreen;
+}
+
+.worst {
+    color: deeppink;
 }

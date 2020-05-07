@@ -6,12 +6,16 @@ cube.puzzle = "333";
 cube.solves = [];
 
 cube.onload = function onload() {
-    $("body").on("keypress", function (event) {
+    // $("body").prepend("<span>w= " + $("body").outerWidth() + "/ h= " + $("body").outerHeight() + "</span>")
+
+    $("body").on("keypress touchend", function (event) {
         cube.startStopClock(event)
     });
 
     $("input[type='radio']").on("click", function() {
         cube.retrieveSolves();
+    }).on("touchend", function() {
+        return false;
     }).checkboxradio({icon: false});
 
     $("button").on("click", function() {
@@ -119,8 +123,11 @@ cube.populateSolvesDiv = function populateSolvesDiv() {
                     cube.saveSolves();
                 })(x);
             });
+            let iSpan = $("<i>").addClass("fa fa-info-circle").on("click", function () {
+                alert($(this).siblings(".solveInfo").text());
+            });
 
-            let li = $("<li>").addClass("solveItem").append(tspan).append(infoSpan).append(delSpan);
+            let li = $("<li>").addClass("solveItem").append(tspan).append(infoSpan).append(delSpan).append(iSpan);
 
             list.prepend(li);
         }
@@ -141,34 +148,42 @@ cube.calculateAverages = function calculateAverages() {
     });
 
     let bestArray = JSON.parse(JSON.stringify(timeArray));
-    let worstArray = JSON.parse(JSON.stringify(timeArray));
 
     bestArray.sort(function(a, b) { return a - b; });
-    worstArray.sort(function(a, b) { return b - a; });
+
+    // remove the best and worst time
+    bestArray.shift();
+    bestArray.pop();
 
     let averagesDiv = $(".averages");
     averagesDiv.html("");
 
-
     if (timeArray.length > 0) {
-        averagesDiv.append($("<div>").addClass("avg").html("Avg: " + cube.convertMillisToTimeString(cube.calculateAveragesWork(timeArray, timeArray.length))));
-    }
+        averagesDiv.append($("<div>").addClass("avg").html("Avg: " + cube.convertMillisToTimeString(cube.calculateAveragesWork(bestArray, bestArray.length))));
 
-    if (timeArray.length > 2) {
-        averagesDiv.append($("<div>").addClass("avg").html("Best 3 Avg: " + cube.convertMillisToTimeString(cube.calculateAveragesWork(bestArray, 3))));
-        averagesDiv.append($("<div>").addClass("avg").html("Worst 3 Avg: " + cube.convertMillisToTimeString(cube.calculateAveragesWork(worstArray, 3))));
-    }
+        let partAvg = Math.round(timeArray.length / 2);
 
-    if (timeArray.length > 4) {
-        averagesDiv.append($("<div>").addClass("avg").html("Best 5 Avg: " + cube.convertMillisToTimeString(cube.calculateAveragesWork(bestArray, 5))));
-        averagesDiv.append($("<div>").addClass("avg").html("Worst 5 Avg: " + cube.convertMillisToTimeString(cube.calculateAveragesWork(worstArray, 5))));
-    }
+        while (partAvg > 2) {
+            let bestArray = JSON.parse(JSON.stringify(timeArray));
+            let worstArray = JSON.parse(JSON.stringify(timeArray));
 
-    if (timeArray.length > 9) {
-        averagesDiv.append($("<div>").addClass("avg").html("Best 10 Avg: " + cube.convertMillisToTimeString(cube.calculateAveragesWork(bestArray, 10))));
-        averagesDiv.append($("<div>").addClass("avg").html("Worst 10 Avg: " + cube.convertMillisToTimeString(cube.calculateAveragesWork(worstArray, 10))));
+            bestArray.sort(function(a, b) { return a - b; });
+            worstArray.sort(function(a, b) { return b - a; });
+
+            bestArray.length = partAvg + 1;
+            bestArray.shift();
+            worstArray.length = partAvg + 1;
+            worstArray.shift();
+
+            averagesDiv.append($("<hr>").css("width", "90%"));
+
+            averagesDiv.append($("<div>").addClass("avg").html("<span class='bestworst best'>Best " + partAvg + "</span> Avg: " + cube.convertMillisToTimeString(cube.calculateAveragesWork(bestArray, partAvg))));
+            averagesDiv.append($("<div>").addClass("avg").html("<span class='bestworst worst'>Worst " + partAvg + "</span> Avg: " + cube.convertMillisToTimeString(cube.calculateAveragesWork(worstArray, partAvg))));
+
+            partAvg = Math.round(partAvg / 2);
+        }
     }
-};
+}
 
 cube.calculateAveragesWork = function calculateAveragesWork(theArray, numberToAvg) {
     let avg = 0;
@@ -188,37 +203,39 @@ cube.calculateAveragesWork = function calculateAveragesWork(theArray, numberToAv
 
 cube.startStopClock = function startStopClock(event) {
 
-    if (event.code == "Space") {
-        if (cube.clockStopped)
-            cube.resetClock();
-        else if (cube.clockInterval == undefined) {
-            let clockDiv = $(".clock");
+    if ((event.originalEvent instanceof KeyboardEvent) && (event.code != "Space")) {
+        return;
+    }
 
-            cube.clockInterval = setInterval(function clockStuff() {
-                let t = (new Date).getTime();
+    if (cube.clockStopped)
+        cube.resetClock();
+    else if (cube.clockInterval == undefined) {
+        let clockDiv = $(".clock");
 
-                if (!cube.clockStart)
-                    cube.clockStart = t;
+        cube.clockInterval = setInterval(function clockStuff() {
+            let t = (new Date).getTime();
 
-                let elapsed = t - cube.clockStart;
+            if (!cube.clockStart)
+                cube.clockStart = t;
 
-                clockDiv.html(cube.convertMillisToTimeString(elapsed));
-            }, 10);
-        } else {
-            clearInterval(cube.clockInterval);
-            cube.clockInterval = undefined;
-            cube.clockStopped = true;
+            let elapsed = t - cube.clockStart;
 
-            let solveObj = {
-                "scramble": $(".totalScramble").text(),
-                "time": $(".clock").text(),
-                "date": (new Date()).getTime()
-            };
+            clockDiv.html(cube.convertMillisToTimeString(elapsed));
+        }, 10);
+    } else {
+        clearInterval(cube.clockInterval);
+        cube.clockInterval = undefined;
+        cube.clockStopped = true;
 
-            cube.solves.push(solveObj);
-            cube.saveSolves();
-            cube.populateSolvesDiv();
-        }
+        let solveObj = {
+            "scramble": $(".totalScramble").text(),
+            "time": $(".clock").text(),
+            "date": (new Date()).getTime()
+        };
+
+        cube.solves.push(solveObj);
+        cube.saveSolves();
+        cube.populateSolvesDiv();
     }
 };
 
