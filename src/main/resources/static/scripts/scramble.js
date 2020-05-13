@@ -27,6 +27,13 @@ cube.onload = function onload() {
 
     cube.getScramble(cube.processScramble);
     cube.retrieveSolves(cube.processSolves);
+
+    $(document).tooltip({
+        "tooltipClass": "tooltip",
+        "content": function() {
+            return $(this).attr('title');
+        }
+    });
 };
 
 cube.getScramble = function getScramble(callback) {
@@ -115,7 +122,9 @@ cube.populateSolvesDiv = function populateSolvesDiv() {
             let solveBase64 = btoa(solveStr);
 
             let tspan = $("<span>").text(solve.time).addClass("solveTime");
+
             let infoSpan = $("<span>").text(solveBase64).addClass("solveInfo").hide();
+
             let delSpan = $("<i>").addClass("fa fa-times-circle").on("click", function () {
                 return (function (index) {
                     cube.solves.splice(index, 1);
@@ -123,18 +132,12 @@ cube.populateSolvesDiv = function populateSolvesDiv() {
                     cube.saveSolves();
                 })(x);
             });
-            let iSpan = $("<i>").addClass("fa fa-info-circle").on("click", function () {
-                let s = atob($(this).siblings(".solveInfo").text());
-                let o = JSON.parse(s);
-                let date = new Date(o.date);
-                let solve = o.time;
-                let scramble = o.scramble
-                let d = $("<div id='dialog' title=''>").html(date.toString().substring(0,21) + "<br><br>" + solve + "<br><br>" + scramble);
-                d.dialog({
-                    width: 500,
-                    height: 200
-                });
-            });
+
+            let iSpan = $("<i>").addClass("fa fa-info-circle");
+            let _date = new Date(solve.date);
+            let _solve = solve.time;
+            let _scramble = solve.scramble
+            iSpan.attr("title", _date.toString().substring(0,21) + "<br><br>" + _solve + "<br><br>" + _scramble);
 
             let li = $("<li>").addClass("solveItem").append(tspan).append(infoSpan).append(delSpan).append(iSpan);
 

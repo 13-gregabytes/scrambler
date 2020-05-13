@@ -127,7 +127,7 @@ i.fa.fa-info-circle {
     font-size: 22px;
     position: relative;
     top: -1px;
-    cursor: no-drop;
+    cursor: pointer;
 }
 
 i.fa.fa-times-circle {
@@ -163,4 +163,9 @@ input[type='radio'] {
 
 div.ui-dialog .ui-dialog-titlebar {
     padding: 0;
+}
+
+.tooltip {
+    font-size:16px;
+    padding:10px;
 }

@@ -23,6 +23,10 @@ Graph.processSolveData = function processSolveData(type, responseB64) {
     Graph.solveData[type] = JSON.parse(responseString);
 
     let data = [];
+    let avg = [];
+
+    let _i = 1;
+    let runningSum = 0;
 
     for (let i in Graph.solveData[type]) {
         let t = Graph.solveData[type][i].time;
@@ -33,9 +37,12 @@ Graph.processSolveData = function processSolveData(type, responseB64) {
         let v = (c * 1) + (s * 1000) + (m * 60 * 1000);
 
         data.push(v);
+
+        avg.push((runningSum += v) / _i++);
     }
 
     Graph.graphData[type] = data;
+    Graph.graphData[type + "avg"] = avg;
 }
 
 Graph.processGraphData = function processGraphData() {
@@ -58,7 +65,11 @@ Graph.processGraphData = function processGraphData() {
                 max = Graph.graphData[i][j];
         }
 
-        let color = "rgb(" + Math.round(Math.random() * 255) + ", " + Math.round(Math.random() * 255) + ", " + Math.round(Math.random() * 255) + ")";
+        let _r = (i == "ROUX") ? 255 : Math.round(Math.random() * 255);
+        let _g = Math.round(Math.random() * 255);
+        let _b = (i == "CFOP") ? 255 : Math.round(Math.random() * 255);
+
+        let color = "rgb(" + _r + ", " + _g + ", " + _b + ")";
 
         let set = {
             "label": i,
@@ -77,6 +88,15 @@ Graph.processGraphData = function processGraphData() {
     for (let i = 1; i <= cnt; i++) {
         labels.push(i);
     }
+
+    let mintime = new Date(min);
+    min = mintime.setSeconds(0);
+    min = mintime.setMilliseconds(0);
+
+    let maxtime = new Date(max);
+    max = maxtime.setSeconds(0);
+    max = maxtime.setMilliseconds(0);
+    max = maxtime.setMinutes(maxtime.getMinutes() + 1)
 
     let ctx = document.getElementById('myChart');
     let myChart = new Chart(ctx, {
@@ -111,11 +131,34 @@ Graph.processGraphData = function processGraphData() {
             tooltips: {
                 callbacks: {
                     title: function(tooltipItem, data) {
-                        return ["GREG", "BOCHAN"];
+                        let _a = tooltipItem[0].datasetIndex;
+
+                        if (_a == 0)
+                            _a = "CFOP";
+                        else if (_a == 1)
+                            _a = "ROUX";
+
+                        let _o = Graph.solveData[_a][tooltipItem[0].index];
+
+                        let _d = new Date(_o.date);
+
+                        return [
+                            tooltipItem[0].label,
+                            ((_d.getDate() < 10) ? "0" + _d.getDate() : _d.getDate()) +
+                            "/" +
+                            (((_d.getMonth() + 1) < 10) ? "0" + (_d.getMonth() + 1) : (_d.getMonth() + 1)) +
+                            "/" +
+                            ((_d.getFullYear() < 10) ? "0" + _d.getFullYear() : _d.getFullYear()) +
+                            " " +
+                            ((_d.getHours() < 10) ? "0" + _d.getHours() : _d.getHours()) +
+                            ":" +
+                            ((_d.getMinutes() < 10) ? "0" + _d.getMinutes() : _d.getMinutes())
+                        ];
                       /*
                       tooltipItem
                         0:
-                            datasetIndex: 1
+                            datasetIndex:
+
                             index: 24
                             label: "25"
                             value: "336047"
