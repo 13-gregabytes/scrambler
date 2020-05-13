@@ -13,24 +13,24 @@ cube.onload = function onload() {
     });
 
     $("input[type='radio']").on("click", function() {
-        cube.retrieveSolves();
+        cube.retrieveSolves(cube.processSolves);
     }).on("touchend", function() {
         return false;
     }).checkboxradio({icon: false});
 
     $("button").on("click", function() {
-        cube.getScramble();
+        cube.getScramble(cube.processScramble);
     }).on("keyup keydown keypress", function(event) {
         event.preventDefault();
         return false;
     }).button();
 
-    cube.getScramble();
-    cube.retrieveSolves();
+    cube.getScramble(cube.processScramble);
+    cube.retrieveSolves(cube.processSolves);
 };
 
-cube.getScramble = function getScramble() {
-    ajax.get(cube.baseURL + "/scrambler/scramble/.json?=" + cube.puzzle, undefined, cube.processScramble);
+cube.getScramble = function getScramble(callback) {
+    ajax.get(cube.baseURL + "/scrambler/scramble/.json?=" + cube.puzzle, undefined, callback);
 };
 
 cube.processScramble = function processScramble(scrambleResponse) {
@@ -83,9 +83,9 @@ cube.saveSolves = function saveSolves() {
     ajax.post(cube.baseURL + "/scrambler/save", { "solves": btoa(solvesArrayAsString), "solveMethod": solveMethod }, undefined);
 };
 
-cube.retrieveSolves = function retrieveSolves() {
+cube.retrieveSolves = function retrieveSolves(callback) {
     let solveMethod = cube.getSolveMethod();
-    ajax.get(cube.baseURL + "/scrambler/retrieve", { "solveMethod": solveMethod }, cube.processSolves);
+    ajax.get(cube.baseURL + "/scrambler/retrieve", { "solveMethod": solveMethod }, callback);
 };
 
 cube.processSolves = function processSolves(base64response) {
@@ -132,7 +132,7 @@ cube.populateSolvesDiv = function populateSolvesDiv() {
                 let d = $("<div id='dialog' title=''>").html(date.toString().substring(0,21) + "<br><br>" + solve + "<br><br>" + scramble);
                 d.dialog({
                     width: 500,
-                    height: 200g
+                    height: 200
                 });
             });
 
@@ -256,7 +256,7 @@ cube.resetClock = function resetClock() {
 
     $(".clock").html("00:00.00");
 
-    cube.getScramble();
+    cube.getScramble(cube.processScramble);
 };
 
 cube.convertTimeStringToMillis = function convertTimeStringToMillis(toConvert) {
