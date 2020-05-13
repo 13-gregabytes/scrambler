@@ -124,7 +124,16 @@ cube.populateSolvesDiv = function populateSolvesDiv() {
                 })(x);
             });
             let iSpan = $("<i>").addClass("fa fa-info-circle").on("click", function () {
-                alert($(this).siblings(".solveInfo").text());
+                let s = atob($(this).siblings(".solveInfo").text());
+                let o = JSON.parse(s);
+                let date = new Date(o.date);
+                let solve = o.time;
+                let scramble = o.scramble
+                let d = $("<div id='dialog' title=''>").html(date.toString().substring(0,21) + "<br><br>" + solve + "<br><br>" + scramble);
+                d.dialog({
+                    width: 500,
+                    height: 200g
+                });
             });
 
             let li = $("<li>").addClass("solveItem").append(tspan).append(infoSpan).append(delSpan).append(iSpan);

@@ -156,3 +156,11 @@ input[type='radio'] {
 .worst {
     color: deeppink;
 }
+
+#dialog.ui-widget-content {
+    font-size: 0.5em;
+}
+
+div.ui-dialog .ui-dialog-titlebar {
+    padding: 0;
+}
