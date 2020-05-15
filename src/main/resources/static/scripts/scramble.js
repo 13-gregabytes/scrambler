@@ -12,7 +12,14 @@ cube.onload = function onload() {
         cube.startStopClock(event)
     });
 
-    $("input[type='radio']").on("click", function() {
+    $("input[type='radio'][name='puzzleType']").on("click", function() {
+        cube.setPuzzle();
+        cube.retrieveSolves(cube.processSolves);
+    }).on("touchend", function() {
+        return false;
+    }).checkboxradio({icon: false});
+
+    $("input[type='radio'][name='solveMethod']").on("click", function() {
         cube.retrieveSolves(cube.processSolves);
     }).on("touchend", function() {
         return false;
@@ -35,6 +42,11 @@ cube.onload = function onload() {
         }
     });
 };
+
+cube.setPuzzle = function setPuzzle() {
+    cube.puzzle = cube.getPuzzleType();
+    cube.getScramble(cube.processScramble);
+}
 
 cube.getScramble = function getScramble(callback) {
     ajax.get(cube.baseURL + "/scrambler/scramble/.json?=" + cube.puzzle, undefined, callback);
@@ -86,13 +98,23 @@ cube.displayImage = function displayImage(svg) {
 cube.saveSolves = function saveSolves() {
     let solvesArrayAsString = JSON.stringify(cube.solves);
     let solveMethod = cube.getSolveMethod();
+    let puzzleType = cube.getPuzzleType();
 
-    ajax.post(cube.baseURL + "/scrambler/save", { "solves": btoa(solvesArrayAsString), "solveMethod": solveMethod }, undefined);
+    ajax.post(cube.baseURL + "/scrambler/save", {
+        "solves": btoa(solvesArrayAsString),
+        "solveMethod": solveMethod,
+        "puzzleType": puzzleType
+    }, undefined);
 };
 
 cube.retrieveSolves = function retrieveSolves(callback) {
     let solveMethod = cube.getSolveMethod();
-    ajax.get(cube.baseURL + "/scrambler/retrieve", { "solveMethod": solveMethod }, callback);
+    let puzzleType = cube.getPuzzleType();
+
+    ajax.get(cube.baseURL + "/scrambler/retrieve", {
+        "solveMethod": solveMethod,
+        "puzzleType": puzzleType
+    }, callback);
 };
 
 cube.processSolves = function processSolves(base64response) {
@@ -303,4 +325,8 @@ cube.clone = function clone(jsonObject) {
 
 cube.getSolveMethod = function getSolveMethod() {
     return $('input[name="solveMethod"]:checked').val();
+};
+
+cube.getPuzzleType = function getPuzzleType () {
+    return $('input[name="puzzleType"]:checked').val();
 };

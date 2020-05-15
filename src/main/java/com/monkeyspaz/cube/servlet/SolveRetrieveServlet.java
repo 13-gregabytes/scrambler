@@ -23,6 +23,7 @@ public class SolveRetrieveServlet extends HttpServlet {
         String responseString = "";
 
         String solveMethod = request.getParameter("solveMethod");
+        String puzzleType = request.getParameter("puzzleType");
 
         String path = request.getServletContext().getRealPath("'");
         path = path.substring(0, path.length() - 1);
@@ -31,12 +32,14 @@ public class SolveRetrieveServlet extends HttpServlet {
         String fileName = "unknown";
 
         CubeUtils.SolveMethod method = null;
+        CubeUtils.PuzzleType puzzle = null;
 
         String solvesBase64 = "";
 
         try {
             method = CubeUtils.SolveMethod.valueOf(solveMethod.toUpperCase());
-            fileName = method.getFilename();
+            puzzle = CubeUtils.PuzzleType.init(puzzleType);
+            fileName = method.getFilename(puzzle);
 
             File solveFile = new File(path + fileName);
 

@@ -24,6 +24,10 @@
 
 <div class="left">
   <div class="buttons">
+    <input type="radio" name="puzzleType" id="three" value="333" checked>
+    <label for="three">3 x 3</label>
+    <input type="radio" name="puzzleType" id="two" value="222">
+    <label for="two">2 x 2</label>
     <button value="Scramble">Scramble</button>
   </div>
   <div class="scramble"></div>
@@ -32,10 +36,10 @@
 </div>
 <div class="right">
   <div class="buttons">
-    <input type="radio" name="solveMethod" id="roux" value="roux" checked>
-    <label for="roux">Roux</label>
-    <input type="radio" name="solveMethod" id="cfop" value="cfop">
+    <input type="radio" name="solveMethod" id="cfop" value="cfop" checked>
     <label for="cfop">CFOP</label>
+    <input type="radio" name="solveMethod" id="roux" value="roux">
+    <label for="roux">Roux</label>
   </div>
   <div class="clock">00:00.00</div>
   <div class="break"></div>

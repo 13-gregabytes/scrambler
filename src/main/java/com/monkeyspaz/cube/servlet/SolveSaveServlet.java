@@ -22,10 +22,10 @@ public class SolveSaveServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
         String solvesBase64 = request.getParameter("solves");
-
         String solveMethod = request.getParameter("solveMethod");
+        String puzzleType = request.getParameter("puzzleType");
 
-        String responseString = "";
+        String responseString = null;
 
         String path = request.getServletContext().getRealPath("'");
         path = path.substring(0, path.length() - 1);
@@ -34,15 +34,17 @@ public class SolveSaveServlet extends HttpServlet {
         String fileName = "unknown";
 
         CubeUtils.SolveMethod method = null;
+        CubeUtils.PuzzleType puzzle = null;
 
         try {
             method = CubeUtils.SolveMethod.valueOf(solveMethod.toUpperCase());
+            puzzle = CubeUtils.PuzzleType.init(puzzleType);
         } catch (Throwable t2) {
             responseString = "Invalid solve method.\n" + t2.getMessage();
         }
 
         if (method != null) {
-            fileName = method.getFilename();
+            fileName = method.getFilename(puzzle);
 
             File solveFile = new File(path + fileName);
 
@@ -63,7 +65,11 @@ public class SolveSaveServlet extends HttpServlet {
         response.setHeader("Access-Control-Max-Age", "86400");
 
         try (PrintWriter out = response.getWriter()) {
-            out.write(path + fileName);
+            if (responseString == null)
+                out.write(responseString);
+            else
+                out.write(path + fileName);
+
             out.flush();
         }
     }

@@ -16,8 +16,36 @@ public class CubeUtils {
         ROUX,
         CFOP;
 
-        public String getFilename () {
-            return String.format("solve_%s.txt", this.toString().toLowerCase());
+        public String getFilename (PuzzleType puzzleType) {
+            return String.format("solve_%s_%s.txt", this.toString().toLowerCase(), puzzleType.toString());
+        }
+    }
+
+    public enum PuzzleType {
+        TWO_X_TWO("222"),
+        THREE_X_THREE("333");
+
+        String puzzleType = null;
+
+        private PuzzleType(String puzzleType) {
+            this.puzzleType = puzzleType;
+        }
+
+        public static PuzzleType init(String puzzleType) {
+            if (puzzleType.equals("222"))
+                return TWO_X_TWO;
+            else if (puzzleType.equals("333"))
+                return THREE_X_THREE;
+            else
+                return null;
+        }
+
+        public String toString() {
+          return this.puzzleType;
+        }
+
+        public String getFilename (SolveMethod solveMethod) {
+            return String.format("solve_%s_%s.txt", solveMethod.toString().toLowerCase(), this.toString());
         }
     }
 
