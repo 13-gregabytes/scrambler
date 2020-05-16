@@ -4,20 +4,12 @@ Graph.solveData = {};
 Graph.graphData = {};
 
 Graph.buildGraph = function buildGraph() {
-    ajax.get(cube.baseURL + "/scrambler/retrieve", {"solveMethod": "CFOP"}, Graph.processCFOPData);
+    cube.retrieveSolves(Graph.processSolveData);
 };
 
-Graph.processCFOPData = function processCFOPData(responseB64) {
-    Graph.processSolveData("CFOP", responseB64);
-    ajax.get(cube.baseURL + "/scrambler/retrieve", {"solveMethod": "ROUX"}, Graph.processRouxData);
-}
+Graph.processSolveData = function processSolveData(responseB64) {
+    let type = cube.method.toUpperCase();
 
-Graph.processRouxData = function processRouxData(responseB64) {
-    Graph.processSolveData("ROUX", responseB64);
-    Graph.processGraphData();
-}
-
-Graph.processSolveData = function processSolveData(type, responseB64) {
     let responseString = atob(responseB64);
 
     Graph.solveData[type] = JSON.parse(responseString);
@@ -42,7 +34,9 @@ Graph.processSolveData = function processSolveData(type, responseB64) {
     }
 
     Graph.graphData[type] = data;
-    Graph.graphData[type + "avg"] = avg;
+    Graph.graphData[type + " Avg"] = avg;
+
+    Graph.processGraphData();
 }
 
 Graph.processGraphData = function processGraphData() {
@@ -53,7 +47,7 @@ Graph.processGraphData = function processGraphData() {
 
     let cnt = 0;
 
-    for (let i in Graph.graphData) {
+    [cube.method.toUpperCase(), cube.method.toUpperCase() + " Avg" ].forEach(function(i) {
         if (Graph.graphData[i].length > cnt)
             cnt = Graph.graphData[i].length;
 
@@ -81,7 +75,7 @@ Graph.processGraphData = function processGraphData() {
         };
 
         datasets.push(set);
-    }
+    });
 
     let labels = [];
 
@@ -92,13 +86,14 @@ Graph.processGraphData = function processGraphData() {
     let mintime = new Date(min);
     min = mintime.setSeconds(0);
     min = mintime.setMilliseconds(0);
+    min = 0;
 
     let maxtime = new Date(max);
     max = maxtime.setSeconds(0);
     max = maxtime.setMilliseconds(0);
     max = maxtime.setMinutes(maxtime.getMinutes() + 1)
 
-    let ctx = document.getElementById('myChart');
+    let ctx = document.getElementById('solveChart');
     let myChart = new Chart(ctx, {
         "type": "line",
         "data": {

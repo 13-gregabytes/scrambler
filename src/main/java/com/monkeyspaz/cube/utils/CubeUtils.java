@@ -32,12 +32,10 @@ public class CubeUtils {
         }
 
         public static PuzzleType init(String puzzleType) {
-            if (puzzleType.equals("222"))
+            if ("222".equals(puzzleType))
                 return TWO_X_TWO;
-            else if (puzzleType.equals("333"))
-                return THREE_X_THREE;
             else
-                return null;
+                return THREE_X_THREE;
         }
 
         public String toString() {

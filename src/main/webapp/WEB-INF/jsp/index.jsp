@@ -8,8 +8,11 @@
 
   <script type="text/javascript" src="scripts/libs/jquery-3.4.1/jquery-3.4.1.js"></script>
   <script type="text/javascript" src="scripts/libs/jquery-ui-1.12.1/jquery-ui.js"></script>
+  <script type="text/javascript" src="scripts/libs/chart.js/Chart.js"></script>
+
   <script type="text/javascript" src="scripts/ajax.js"></script>
   <script type="text/javascript" src="scripts/scramble.js"></script>
+  <script type="text/javascript" src="scripts/graph.js"></script>
 
   <link rel="stylesheet" type="text/css" href="style/libs/font-awesome-4.7.0/css/font-awesome.css">
   <link rel="stylesheet" type="text/css" href="scripts/libs/jquery-ui-1.12.1/jquery-ui.css">
@@ -28,7 +31,8 @@
     <label for="three">3 x 3</label>
     <input type="radio" name="puzzleType" id="two" value="222">
     <label for="two">2 x 2</label>
-    <button value="Scramble">Scramble</button>
+    <button id="graph" value="graph">Graph</button>
+    <button id="Scramble" value="Scramble">Scramble</button>
   </div>
   <div class="scramble"></div>
   <div class="break"></div>

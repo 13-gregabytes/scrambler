@@ -3,29 +3,44 @@ window.cube = window.cube || {};
 cube.baseURL = document.location.protocol + '//' + document.location.host + ((document.location.port) ? (':' + document.location.port) : '');
 
 cube.puzzle = "333";
+cube.method = "CFOP";
 cube.solves = [];
 
 cube.onload = function onload() {
-    // $("body").prepend("<span>w= " + $("body").outerWidth() + "/ h= " + $("body").outerHeight() + "</span>")
-
-    $("body").on("keypress touchend", function (event) {
+    $("body").on("keypress", function (event) {
         cube.startStopClock(event)
     });
 
     $("input[type='radio'][name='puzzleType']").on("click", function() {
         cube.setPuzzle();
         cube.retrieveSolves(cube.processSolves);
-    }).on("touchend", function() {
-        return false;
     }).checkboxradio({icon: false});
 
     $("input[type='radio'][name='solveMethod']").on("click", function() {
+        cube.setMethod();
         cube.retrieveSolves(cube.processSolves);
-    }).on("touchend", function() {
-        return false;
     }).checkboxradio({icon: false});
 
-    $("button").on("click", function() {
+    $("#graph").on("click", function() {
+        $("#dialog").dialog("close");
+
+        let d = $("<div id='dialog' title=''>").html(
+            "<canvas id=\"solveChart\" class=\"chartjs\" width=\"750\" height=\"400\"></canvas>"
+        );
+
+        d.dialog({
+            "width": 800,
+            "height": 500,
+            "closeText": null,
+            "open": function( event, ui ) { Graph.buildGraph(); },
+            "close": function( event, ui ) { $("#dialog").remove(); }
+        });
+    }).on("keyup keydown keypress", function(event) {
+        event.preventDefault();
+        return false;
+    }).button();
+
+    $("#Scramble").on("click", function() {
         cube.getScramble(cube.processScramble);
     }).on("keyup keydown keypress", function(event) {
         event.preventDefault();
@@ -41,7 +56,14 @@ cube.onload = function onload() {
             return $(this).attr('title');
         }
     });
+
+    cube.puzzle = cube.getPuzzleType();
+    cube.method = cube.getSolveMethod();
 };
+
+cube.setMethod = function setMethod() {
+    cube.method = cube.getSolveMethod();
+}
 
 cube.setPuzzle = function setPuzzle() {
     cube.puzzle = cube.getPuzzleType();
@@ -97,23 +119,18 @@ cube.displayImage = function displayImage(svg) {
 
 cube.saveSolves = function saveSolves() {
     let solvesArrayAsString = JSON.stringify(cube.solves);
-    let solveMethod = cube.getSolveMethod();
-    let puzzleType = cube.getPuzzleType();
 
     ajax.post(cube.baseURL + "/scrambler/save", {
         "solves": btoa(solvesArrayAsString),
-        "solveMethod": solveMethod,
-        "puzzleType": puzzleType
+        "solveMethod": cube.method,
+        "puzzleType": cube.puzzle
     }, undefined);
 };
 
 cube.retrieveSolves = function retrieveSolves(callback) {
-    let solveMethod = cube.getSolveMethod();
-    let puzzleType = cube.getPuzzleType();
-
     ajax.get(cube.baseURL + "/scrambler/retrieve", {
-        "solveMethod": solveMethod,
-        "puzzleType": puzzleType
+        "solveMethod": cube.method,
+        "puzzleType": cube.puzzle
     }, callback);
 };
 
@@ -133,7 +150,7 @@ cube.populateSolvesDiv = function populateSolvesDiv() {
     let list;
 
     if (cube.solves.length == 0)
-        list = $("<span>").text("No stored " + cube.getSolveMethod() + " solves");
+        list = $("<span>").text("No stored " + cube.method + " solves");
     else {
         list = $("<ol>").addClass("solvesList").prop("reversed", true);
 
