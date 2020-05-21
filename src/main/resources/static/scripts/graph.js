@@ -18,7 +18,8 @@ Graph.processSolveData = function processSolveData(responseB64) {
     let avg = [];
 
     let _i = 1;
-    let runningSum = 0;
+
+    let running5 = [];
 
     for (let i in Graph.solveData[type]) {
         let t = Graph.solveData[type][i].time;
@@ -30,12 +31,28 @@ Graph.processSolveData = function processSolveData(responseB64) {
 
         data.push(v);
 
-        avg.push((runningSum += v) / _i++);
+        running5.push(v);
+
+        if (running5.length == 5) {
+            let _5 = JSON.parse(JSON.stringify(running5));
+
+            _5.sort();
+            _5.shift();
+            _5.pop();
+
+            let sum = 0;
+            _5.forEach(function(cell) { sum += cell });
+
+            avg.push(sum / _5.length);
+
+            running5.shift();
+        } else {
+            avg.push(NaN);
+        }
     }
 
     Graph.graphData[type] = data;
     Graph.graphData[type + " Avg"] = avg;
-
     Graph.processGraphData();
 }
 
@@ -126,42 +143,34 @@ Graph.processGraphData = function processGraphData() {
             tooltips: {
                 callbacks: {
                     title: function(tooltipItem, data) {
+                        let returnArray = [];
+
                         let _a = tooltipItem[0].datasetIndex;
 
-                        if (_a == 0)
-                            _a = "CFOP";
-                        else if (_a == 1)
-                            _a = "ROUX";
+                        if (_a == 0) {
+                            _a = cube.getSolveMethod().toUpperCase();
 
-                        let _o = Graph.solveData[_a][tooltipItem[0].index];
+                            let _o = Graph.solveData[_a][tooltipItem[0].index];
 
-                        let _d = new Date(_o.date);
+                            let _d = new Date(_o.date);
 
-                        return [
-                            tooltipItem[0].label,
-                            ((_d.getDate() < 10) ? "0" + _d.getDate() : _d.getDate()) +
-                            "/" +
-                            (((_d.getMonth() + 1) < 10) ? "0" + (_d.getMonth() + 1) : (_d.getMonth() + 1)) +
-                            "/" +
-                            ((_d.getFullYear() < 10) ? "0" + _d.getFullYear() : _d.getFullYear()) +
-                            " " +
-                            ((_d.getHours() < 10) ? "0" + _d.getHours() : _d.getHours()) +
-                            ":" +
-                            ((_d.getMinutes() < 10) ? "0" + _d.getMinutes() : _d.getMinutes())
-                        ];
-                      /*
-                      tooltipItem
-                        0:
-                            datasetIndex:
+                            returnArray.push(cube.method.toUpperCase() + " " +  tooltipItem[0].label);
+                            returnArray.push(
+                                ((_d.getDate() < 10) ? "0" + _d.getDate() : _d.getDate()) +
+                                "/" +
+                                (((_d.getMonth() + 1) < 10) ? "0" + (_d.getMonth() + 1) : (_d.getMonth() + 1)) +
+                                "/" +
+                                ((_d.getFullYear() < 10) ? "0" + _d.getFullYear() : _d.getFullYear()) +
+                                " " +
+                                ((_d.getHours() < 10) ? "0" + _d.getHours() : _d.getHours()) +
+                                ":" +
+                                ((_d.getMinutes() < 10) ? "0" + _d.getMinutes() : _d.getMinutes())
+                            );
+                        } else {
+                            returnArray.push(cube.method.toUpperCase() + " Average " +  tooltipItem[0].label);
+                        }
 
-                            index: 24
-                            label: "25"
-                            value: "336047"
-                            x: 559.1162364130435
-                            xLabel: 25
-                            y: 32
-                            yLabel: 336047
-                       */
+                        return returnArray;
                     },
                     label: function(tooltipItem, data) {
                         let _d = new Date(parseInt(tooltipItem.value));
