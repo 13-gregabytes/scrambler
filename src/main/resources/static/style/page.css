@@ -85,14 +85,6 @@ svg {
     height: 100%;
 }
 
-rect[fill=".ff0000"] {
-    fill: #c70000;
-}
-
-rect[fill="#0000ff"] {
-    fill: #0045ef;
-}
-
 div.clock {
     text-align: center;
 }
@@ -168,4 +160,20 @@ div.ui-dialog .ui-dialog-titlebar {
 .tooltip {
     font-size:16px;
     padding:10px;
+}
+
+rect[fill="#ff0000"] {
+    fill: darkred;
+}
+
+rect[fill="#0000ff"] {
+    fill: #3e76ff;
+}
+
+rect[fill="#ff8000"] {
+    fill: #ff9900;
+}
+
+rect[fill="#ffff00"] {
+    fill: #ffff66;
 }

@@ -126,9 +126,9 @@ Graph.processGraphData = function processGraphData() {
                 "yAxes": [{
                     "display": true,
                     "ticks": {
-                        "beginAtZero": false,
-                        "min": min,
-                        "max": max,
+                        stepSize: 60000,
+                        min: 0,
+                        max: 360000,
                         "callback": function(v) {
                             let _d = new Date(v);
                             let _m = _d.getMinutes();

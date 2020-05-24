@@ -24,13 +24,16 @@ cube.onload = function onload() {
     $("#graph").on("click", function() {
         $("#dialog").dialog("close");
 
+        let _h = 500;
+        let _w = 1200;
+
         let d = $("<div id='dialog' title=''>").html(
-            "<canvas id=\"solveChart\" class=\"chartjs\" width=\"750\" height=\"400\"></canvas>"
+            "<canvas id=\"solveChart\" class=\"chartjs\" width=\"" + _w + "\" height=\"" + _h + "\"></canvas>"
         );
 
         d.dialog({
-            "width": 800,
-            "height": 500,
+            "width": _w + 100,
+            "height": _h + 100,
             "closeText": null,
             "open": function( event, ui ) { Graph.buildGraph(); },
             "close": function( event, ui ) { $("#dialog").remove(); }
