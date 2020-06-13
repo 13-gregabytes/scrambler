@@ -15,11 +15,12 @@ Graph.processSolveData = function processSolveData(responseB64) {
     Graph.solveData[type] = JSON.parse(responseString);
 
     let data = [];
+    let avg5 = [];
     let avg = [];
 
-    let _i = 1;
-
     let running5 = [];
+
+    let _sum = 0;
 
     for (let i in Graph.solveData[type]) {
         let t = Graph.solveData[type][i].time;
@@ -28,6 +29,10 @@ Graph.processSolveData = function processSolveData(responseB64) {
         let c = t.slice(6, 9);
 
         let v = (c * 1) + (s * 1000) + (m * 60 * 1000);
+
+        _sum += v;
+
+        avg.push(_sum / (i * 1 + 1));
 
         data.push(v);
 
@@ -43,15 +48,16 @@ Graph.processSolveData = function processSolveData(responseB64) {
             let sum = 0;
             _5.forEach(function(cell) { sum += cell });
 
-            avg.push(sum / _5.length);
+            avg5.push(sum / _5.length);
 
             running5.shift();
         } else {
-            avg.push(NaN);
+            avg5.push(NaN);
         }
     }
 
     Graph.graphData[type] = data;
+    Graph.graphData[type + " 5 Avg"] = avg5;
     Graph.graphData[type + " Avg"] = avg;
     Graph.processGraphData();
 }
@@ -64,7 +70,11 @@ Graph.processGraphData = function processGraphData() {
 
     let cnt = 0;
 
-    [cube.method.toUpperCase(), cube.method.toUpperCase() + " Avg" ].forEach(function(i) {
+    let _ = 0;
+
+    [cube.method.toUpperCase(), cube.method.toUpperCase() + " 5 Avg", cube.method.toUpperCase() + " Avg" ].forEach(function(i) {
+        _++;
+
         if (Graph.graphData[i].length > cnt)
             cnt = Graph.graphData[i].length;
 
@@ -76,9 +86,9 @@ Graph.processGraphData = function processGraphData() {
                 max = Graph.graphData[i][j];
         }
 
-        let _r = (i == "ROUX") ? 255 : Math.round(Math.random() * 255);
-        let _g = Math.round(Math.random() * 255);
-        let _b = (i == "CFOP") ? 255 : Math.round(Math.random() * 255);
+        let _r = (_ == 1) ? 255 : Math.round(Math.random() * 255);
+        let _g = (_ == 2) ? 255 : Math.round(Math.random() * 255);
+        let _b = (i == 3) ? 255 : Math.round(Math.random() * 255);
 
         let color = "rgb(" + _r + ", " + _g + ", " + _b + ")";
 
@@ -121,14 +131,19 @@ Graph.processGraphData = function processGraphData() {
             "responsive": false,
             "scales": {
                 "xAxes": [{
-                    "display": true
+                    "display": true,
+                    "ticks": {
+                        "stepSize": 1,
+                        "min": 0,
+                        "max": cnt + 1
+                    }
                 }],
                 "yAxes": [{
                     "display": true,
                     "ticks": {
-                        stepSize: 60000,
-                        min: 0,
-                        max: 360000,
+                        "stepSize": 60000,
+                        "min": 0,
+                        "max": 360000,
                         "callback": function(v) {
                             let _d = new Date(v);
                             let _m = _d.getMinutes();
