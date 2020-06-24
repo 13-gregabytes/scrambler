@@ -88,7 +88,7 @@ Graph.processGraphData = function processGraphData() {
 
         let _r = (_ == 1) ? 255 : Math.round(Math.random() * 255);
         let _g = (_ == 2) ? 255 : Math.round(Math.random() * 255);
-        let _b = (i == 3) ? 255 : Math.round(Math.random() * 255);
+        let _b = (_ == 3) ? 255 : Math.round(Math.random() * 255);
 
         let color = "rgb(" + _r + ", " + _g + ", " + _b + ")";
 
