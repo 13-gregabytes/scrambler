@@ -27,10 +27,12 @@
 
 <div class="left">
   <div class="buttons">
+    <input type="radio" name="puzzleType" id="five" value="555">
+    <label for="five">5x5</label>
     <input type="radio" name="puzzleType" id="three" value="333" checked>
-    <label for="three">3 x 3</label>
+    <label for="three">3x3</label>
     <input type="radio" name="puzzleType" id="two" value="222">
-    <label for="two">2 x 2</label>
+    <label for="two">2x2</label>
     <button id="graph" value="graph">Graph</button>
     <button id="Scramble" value="Scramble">Scramble</button>
   </div>

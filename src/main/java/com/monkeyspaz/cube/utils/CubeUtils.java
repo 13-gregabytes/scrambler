@@ -23,7 +23,8 @@ public class CubeUtils {
 
     public enum PuzzleType {
         TWO_X_TWO("222"),
-        THREE_X_THREE("333");
+        THREE_X_THREE("333"),
+        FIVE_X_FIVE("555");
 
         String puzzleType = null;
 
@@ -34,6 +35,8 @@ public class CubeUtils {
         public static PuzzleType init(String puzzleType) {
             if ("222".equals(puzzleType))
                 return TWO_X_TWO;
+            else if ("555".equals(puzzleType))
+                return FIVE_X_FIVE;
             else
                 return THREE_X_THREE;
         }
