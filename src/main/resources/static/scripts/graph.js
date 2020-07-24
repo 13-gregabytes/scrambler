@@ -113,7 +113,7 @@ Graph.processGraphData = function processGraphData() {
     let mintime = new Date(min);
     min = mintime.setSeconds(0);
     min = mintime.setMilliseconds(0);
-    min = 0;
+    min = mintime.setMinutes((mintime.getMinutes() < 1) ? 0 : (mintime.getMinutes() - 1));
 
     let maxtime = new Date(max);
     max = maxtime.setSeconds(0);
@@ -142,8 +142,8 @@ Graph.processGraphData = function processGraphData() {
                     "display": true,
                     "ticks": {
                         "stepSize": 60000,
-                        "min": 0,
-                        "max": 360000,
+                        "min": min,
+                        "max": max,
                         "callback": function(v) {
                             let _d = new Date(v);
                             let _m = _d.getMinutes();
