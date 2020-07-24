@@ -14,6 +14,7 @@ cube.onload = function onload() {
     $("input[type='radio'][name='puzzleType']").on("click", function() {
         cube.setPuzzle();
         cube.retrieveSolves(cube.processSolves);
+        cube.resetClock();
     }).checkboxradio({icon: false});
 
     $("input[type='radio'][name='solveMethod']").on("click", function() {
