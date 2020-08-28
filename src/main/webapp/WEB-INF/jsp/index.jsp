@@ -41,7 +41,7 @@
   <div class="image"></div>
 </div>
 <div class="right">
-  <div class="buttons">
+  <div class="buttons" style="display:none">
     <input type="radio" name="solveMethod" id="cfop" value="cfop" checked>
     <label for="cfop">CFOP</label>
     <input type="radio" name="solveMethod" id="roux" value="roux">

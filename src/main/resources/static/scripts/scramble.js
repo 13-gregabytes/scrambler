@@ -11,6 +11,10 @@ cube.onload = function onload() {
         cube.startStopClock(event)
     });
 
+    $(".clock").on("click", function (event) {
+        cube.startStopClock(event)
+    });
+
     $("input[type='radio'][name='puzzleType']").on("click", function() {
         cube.setPuzzle();
         cube.retrieveSolves(cube.processSolves);
@@ -214,7 +218,15 @@ cube.calculateAverages = function calculateAverages() {
     averagesDiv.html("");
 
     if (timeArray.length > 0) {
-        averagesDiv.append($("<div>").addClass("avg").html("Avg: " + cube.convertMillisToTimeString(cube.calculateAveragesWork(bestArray, bestArray.length))));
+        averagesDiv.append($("<div>").addClass("avg").html("<span class='bestworst best'>Avgerage</span>: " + cube.convertMillisToTimeString(cube.calculateAveragesWork(bestArray, bestArray.length))));
+
+        if (timeArray.length > 4) {
+            let rolling3Array = timeArray.slice(-5);
+            rolling3Array.sort(function(a, b) { return a - b; });
+            rolling3Array.shift();
+            rolling3Array.pop();
+            averagesDiv.append($("<div>").addClass("avg").html("<span class='bestworst best'>Rolling 3</span>: " + cube.convertMillisToTimeString(cube.calculateAveragesWork(rolling3Array, rolling3Array.length))));
+        }
 
         let partAvg = Math.round(timeArray.length / 2);
 
